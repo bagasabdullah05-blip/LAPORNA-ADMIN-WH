@@ -56,6 +56,7 @@ export default function PenjualanPage() {
   const [pelangganId, setPelangganId] = useState('');
   const [salesId, setSalesId] = useState('');
   const [metodeBayar, setMetodeBayar] = useState('TUNAI');
+  const [tanggal, setTanggal] = useState(() => new Date().toISOString().slice(0, 10));
 
   const [stokKonsinyasi, setStokKonsinyasi] = useState<StokKonsinyasi[]>([]);
   const [loadingStok, setLoadingStok] = useState(false);
@@ -193,6 +194,7 @@ export default function PenjualanPage() {
     try {
       const payload = {
         tipe: tipeTransaksi,
+        tanggal,
         apotekId: tipeTransaksi === 'KONSINYASI' ? apotekId : undefined,
         pelangganId: tipeTransaksi === 'LANGSUNG' ? pelangganId : undefined,
         salesId,
@@ -253,7 +255,17 @@ export default function PenjualanPage() {
       <form onSubmit={handleSubmit}>
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 md:p-6 mb-4 md:mb-6">
           <h2 className="text-base md:text-lg font-semibold text-white mb-4">Informasi Transaksi</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
+            <div>
+              <label className="block text-sm text-gray-400 mb-1">Tanggal</label>
+              <input
+                type="date"
+                value={tanggal}
+                onChange={(e) => setTanggal(e.target.value)}
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
+              />
+            </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">Tipe Transaksi</label>
               <select

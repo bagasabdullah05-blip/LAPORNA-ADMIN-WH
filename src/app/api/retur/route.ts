@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { apotekId, produkId, jumlah, keterangan } = body;
+    const { apotekId, produkId, jumlah, keterangan, tanggal } = body;
 
     if (!apotekId || !produkId || !jumlah) {
       return NextResponse.json(
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       }
 
       const log = await tx.returLog.create({
-        data: { apotekId, produkId, jumlah, keterangan: keterangan || "" },
+        data: { apotekId, produkId, jumlah, keterangan: keterangan || "", tanggal: tanggal ? new Date(tanggal) : new Date() },
       });
 
       await tx.produk.update({

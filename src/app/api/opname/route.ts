@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { tipe, apotekId, produkId, stokFisik, keterangan } = body;
+    const { tipe, apotekId, produkId, stokFisik, keterangan, tanggal } = body;
 
     if (!tipe || !produkId || stokFisik === undefined || !keterangan) {
       return NextResponse.json(
@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
           stokFisik,
           selisih,
           keterangan,
+          tanggal: tanggal ? new Date(tanggal) : new Date(),
         },
       });
 

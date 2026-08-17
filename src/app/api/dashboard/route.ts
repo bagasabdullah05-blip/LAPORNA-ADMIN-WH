@@ -43,7 +43,7 @@ export async function GET() {
         },
       }),
       prisma.$queryRaw<[{ count: bigint }]>`
-        SELECT COUNT(*) as count FROM Produk WHERE stokGudang <= minStok
+        SELECT COUNT(*) as count FROM "Produk" WHERE "stokGudang" <= "minStok"
       `,
     ]);
 

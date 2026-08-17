@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { apotekId, salesId, keterangan, items } = body;
+    const { apotekId, salesId, keterangan, tanggal, items } = body;
 
     if (!apotekId || !salesId || !items || items.length === 0) {
       return NextResponse.json(
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       const logs = [];
       for (const item of items) {
         const log = await tx.konsinyasiLog.create({
-          data: { apotekId, produkId: item.produkId, salesId, jumlah: item.jumlah, keterangan: keterangan || "" },
+          data: { apotekId, produkId: item.produkId, salesId, jumlah: item.jumlah, keterangan: keterangan || "", tanggal: tanggal ? new Date(tanggal) : new Date() },
         });
         logs.push(log);
 

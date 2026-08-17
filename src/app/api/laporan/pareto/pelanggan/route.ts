@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const search = searchParams.get("search") || "";
-    const kategori = searchParams.get("kategori") || "";
     const sortBy = searchParams.get("sortBy") || "totalRevenue";
     const sortDir = searchParams.get("sortDir") || "desc";
     const periode = searchParams.get("periode") || "";
@@ -20,8 +19,7 @@ export async function GET(request: NextRequest) {
     const tahun = searchParams.get("tahun") || String(new Date().getFullYear());
 
     const conditions: Prisma.Sql[] = [];
-    if (search) conditions.push(Prisma.sql`AND pr.nama LIKE ${"%" + search + "%"}`);
-    if (kategori) conditions.push(Prisma.sql`AND pr.kategori = ${kategori}`);
+    if (search) conditions.push(Prisma.sql`AND a.nama LIKE ${"%" + search + "%"}`);
 
     if (periode && bulan) {
       const b = parseInt(bulan);
@@ -50,18 +48,17 @@ export async function GET(request: NextRequest) {
     const where = conditions.length > 0 ? Prisma.join(conditions) : Prisma.sql``;
 
     const data = await prisma.$queryRaw<{
-      produkId: string; nama: string; kategori: string; totalRevenue: number;
+      apotekId: string; nama: string; alamat: string; totalRevenue: number;
     }[]>`
       SELECT
-        dp."produkId",
-        pr.nama,
-        pr.kategori,
-        SUM(dp.subtotal) as "totalRevenue"
-      FROM "DetailPenjualan" dp
-      JOIN "Produk" pr ON pr.id = dp."produkId"
-      JOIN "Penjualan" p ON p.id = dp."penjualanId"
-      WHERE 1=1 ${where}
-      GROUP BY dp."produkId", pr.nama, pr.kategori
+        p."apotekId",
+        a.nama,
+        a.alamat,
+        SUM(p."totalBayar") as "totalRevenue"
+      FROM "Penjualan" p
+      JOIN "Apotek" a ON a.id = p."apotekId"
+      WHERE p."apotekId" IS NOT NULL ${where}
+      GROUP BY p."apotekId", a.nama, a.alamat
       ORDER BY "totalRevenue" DESC
     `;
 
@@ -69,6 +66,7 @@ export async function GET(request: NextRequest) {
 
     let items = data.map((d) => ({
       nama: d.nama,
+      alamat: d.alamat,
       totalRevenue: Number(d.totalRevenue),
       persentase: 0,
       kumulatif: 0,
@@ -99,7 +97,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ success: true, data: items });
   } catch (error) {
-    console.error("Get laporan pareto error:", error);
+    console.error("Get laporan pareto pelanggan error:", error);
     return NextResponse.json({ success: false, message: "Terjadi kesalahan" }, { status: 500 });
   }
 }

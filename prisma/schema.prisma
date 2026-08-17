@@ -79,8 +79,25 @@ model Sales {
   alamat String
   aktif  Boolean @default(true)
 
-  penjualan       Penjualan[]
-  konsinyasiLogs  KonsinyasiLog[]
+  penjualan         Penjualan[]
+  konsinyasiLogs    KonsinyasiLog[]
+  setoranHarian     SetoranHarian[]
+}
+
+model SetoranHarian {
+  id         String   @id @default(cuid())
+  salesId    String
+  tanggal    DateTime @default(now())
+  jumlahSetor Float
+  keterangan String   @default("")
+
+  sales Sales @relation(fields: [salesId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([salesId])
+  @@index([tanggal])
+  @@index([salesId, tanggal])
 }
 
 model Pelanggan {

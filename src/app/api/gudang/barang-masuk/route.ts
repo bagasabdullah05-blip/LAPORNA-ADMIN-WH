@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { produkId, jumlah, hargaBeli, keterangan } = body;
+    const { produkId, jumlah, hargaBeli, keterangan, tanggal } = body;
 
     if (!produkId || !jumlah || !hargaBeli) {
       return NextResponse.json(
@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
           jumlah,
           hargaBeli,
           keterangan: keterangan || "",
+          tanggal: tanggal ? new Date(tanggal) : new Date(),
         },
       });
 

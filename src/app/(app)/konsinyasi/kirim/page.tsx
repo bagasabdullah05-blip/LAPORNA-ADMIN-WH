@@ -35,6 +35,7 @@ export default function KirimKonsinyasiPage() {
   const [apotekId, setApotekId] = useState('');
   const [salesId, setSalesId] = useState('');
   const [keterangan, setKeterangan] = useState('');
+  const [tanggal, setTanggal] = useState(() => new Date().toISOString().slice(0, 10));
   const [items, setItems] = useState<ItemRow[]>([{ ...emptyItem }]);
 
   const fetchData = () => {
@@ -96,7 +97,7 @@ export default function KirimKonsinyasiPage() {
       const res = await fetch('/api/konsinyasi/kirim', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apotekId, salesId, keterangan, items }),
+        body: JSON.stringify({ apotekId, salesId, keterangan, tanggal, items }),
       });
       const data = await res.json();
       if (data.success) {
@@ -130,7 +131,17 @@ export default function KirimKonsinyasiPage() {
         {/* Info Section */}
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 md:p-6 mb-4 md:mb-6">
           <h2 className="text-base md:text-lg font-semibold text-white mb-4">Informasi Pengiriman</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
+            <div>
+              <label className="block text-xs md:text-sm text-gray-400 mb-1">Tanggal</label>
+              <input
+                type="date"
+                value={tanggal}
+                onChange={(e) => setTanggal(e.target.value)}
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
+              />
+            </div>
             <div>
               <label className="block text-xs md:text-sm text-gray-400 mb-1">Apotek</label>
               <SearchSelect options={apotekList.map((a) => ({ value: a.id, label: a.nama }))} value={apotekId} onChange={setApotekId} placeholder="Pilih Apotek" />

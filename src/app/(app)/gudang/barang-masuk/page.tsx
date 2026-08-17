@@ -29,6 +29,7 @@ export default function BarangMasukPage() {
     jumlah: 0,
     hargaBeli: 0,
     keterangan: '',
+    tanggal: new Date().toISOString().slice(0, 10),
   });
 
   const fetchData = () => {
@@ -57,7 +58,7 @@ export default function BarangMasukPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      setForm({ produkId: '', jumlah: 0, hargaBeli: 0, keterangan: '' });
+      setForm({ produkId: '', jumlah: 0, hargaBeli: 0, keterangan: '', tanggal: new Date().toISOString().slice(0, 10) });
       fetchData();
     } catch {
     } finally {
@@ -71,7 +72,17 @@ export default function BarangMasukPage() {
 
       <div className="bg-gray-900 rounded-xl border border-gray-800 p-6 mb-6">
         <h2 className="text-lg font-semibold text-white mb-4">Form Barang Masuk</h2>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">Tanggal</label>
+            <input
+              type="date"
+              value={form.tanggal}
+              onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
           <div>
             <label className="block text-sm text-gray-400 mb-1">Produk</label>
             <SearchSelect

@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { tipe, apotekId, pelangganId, salesId, metodeBayar, items } = body;
+    const { tipe, tanggal, apotekId, pelangganId, salesId, metodeBayar, items } = body;
 
     if (!tipe || !salesId || !metodeBayar || !items || items.length === 0) {
       return NextResponse.json(
@@ -99,6 +99,7 @@ export async function POST(request: NextRequest) {
       const penjualan = await tx.penjualan.create({
         data: {
           tipe,
+          tanggal: tanggal ? new Date(tanggal) : new Date(),
           apotekId: apotekId || null,
           pelangganId: pelangganId || null,
           salesId,

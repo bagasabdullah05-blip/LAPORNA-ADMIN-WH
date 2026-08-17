@@ -20,28 +20,30 @@ export async function GET(request: NextRequest) {
     if (search) conditions.push(Prisma.sql`AND pr.nama LIKE ${"%" + search + "%"}`);
     if (kategori) conditions.push(Prisma.sql`AND pr.kategori = ${kategori}`);
 
+    const where = conditions.length > 0 ? Prisma.join(conditions) : Prisma.sql``;
+
     const validSortFields: Record<string, string> = {
       nama: "pr.nama",
-      totalPenjualan: "totalPenjualan",
-      totalQuantity: "totalQuantity",
+      totalRevenue: `"totalRevenue"`,
+      totalTerjual: `"totalTerjual"`,
     };
-    const sortField = validSortFields[sortBy] || "totalPenjualan";
+    const sortField = validSortFields[sortBy] || `"totalRevenue"`;
     const sortDirection = sortDir === "asc" ? "ASC" : "DESC";
 
     const data = await prisma.$queryRaw<{
       produkId: string; nama: string; kategori: string;
-      totalPenjualan: number; totalQuantity: number; rataRataPerBulan: number;
+      totalRevenue: number; totalTerjual: number; rataRataPerBulan: number;
     }[]>`
       SELECT
         dp."produkId",
         pr.nama,
         pr.kategori,
-        SUM(dp.subtotal) as "totalPenjualan",
-        SUM(dp.jumlah) as "totalQuantity",
+        SUM(dp.subtotal) as "totalRevenue",
+        SUM(dp.jumlah) as "totalTerjual",
         CAST(SUM(dp.jumlah) AS DOUBLE PRECISION) / 6 as "rataRataPerBulan"
       FROM "DetailPenjualan" dp
       JOIN "Produk" pr ON pr.id = dp."produkId"
-      WHERE 1=1 ${Prisma.join(conditions)}
+      WHERE 1=1 ${where}
       GROUP BY dp."produkId", pr.nama, pr.kategori
       ORDER BY ${Prisma.raw(sortField)} ${Prisma.raw(sortDirection)}
     `;
@@ -50,8 +52,8 @@ export async function GET(request: NextRequest) {
       success: true,
       data: data.map((d) => ({
         ...d,
-        totalPenjualan: Number(d.totalPenjualan),
-        totalQuantity: Number(d.totalQuantity),
+        totalRevenue: Number(d.totalRevenue),
+        totalTerjual: Number(d.totalTerjual),
         rataRataPerBulan: Number(d.rataRataPerBulan),
       })),
     });

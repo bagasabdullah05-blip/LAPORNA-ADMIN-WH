@@ -30,6 +30,7 @@ export default function OpnamePage() {
     produkId: '',
     stokFisik: 0,
     keterangan: '',
+    tanggal: new Date().toISOString().slice(0, 10),
   });
 
   const selectedProduk = produkList.find((p) => p.id === form.produkId);
@@ -62,9 +63,9 @@ export default function OpnamePage() {
       await fetch('/api/opname', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, stokSistem }),
+        body: JSON.stringify({ ...form, stokSistem, tanggal: form.tanggal }),
       });
-      setForm({ tipe: 'GUDANG', apotekId: '', produkId: '', stokFisik: 0, keterangan: '' });
+      setForm({ tipe: 'GUDANG', apotekId: '', produkId: '', stokFisik: 0, keterangan: '', tanggal: new Date().toISOString().slice(0, 10) });
       fetchData();
     } catch {
     } finally {
@@ -79,7 +80,17 @@ export default function OpnamePage() {
       <div className="bg-gray-900 rounded-xl border border-gray-800 p-6 mb-6">
         <h2 className="text-lg font-semibold text-white mb-4">Form Opname</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-sm text-gray-400 mb-1">Tanggal</label>
+              <input
+                type="date"
+                value={form.tanggal}
+                onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
+              />
+            </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">Tipe</label>
               <select

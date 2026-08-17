@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 const menuItems = [
   { label: 'Dashboard', href: '/dashboard', icon: '📊' },
@@ -29,7 +30,8 @@ const laporanItems = [
   { label: 'Penjualan', href: '/laporan/penjualan', icon: '💰' },
   { label: 'Margin', href: '/laporan/margin', icon: '📈' },
   { label: 'Perputaran', href: '/laporan/perputaran', icon: '🔄' },
-  { label: 'Pareto', href: '/laporan/pareto', icon: '📊' },
+  { label: 'Pareto Produk', href: '/laporan/pareto', icon: '📊' },
+  { label: 'Pareto Pelanggan', href: '/laporan/pareto/pelanggan', icon: '🏪' },
 ];
 
 function SubMenu({ label, icon, items, pathname, openKey, toggleKey }: {
@@ -86,6 +88,7 @@ function SubMenu({ label, icon, items, pathname, openKey, toggleKey }: {
 export default function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { theme, toggleTheme } = useTheme();
   const [openMenus, setOpenMenus] = useState<Record<string, string>>({
     master: 'master',
     gudang: '',
@@ -214,7 +217,14 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
           toggleKey={() => toggle('laporan')}
         />
 
-        <div className="pt-4 mt-4 border-t border-slate-700/50">
+        <div className="pt-4 mt-4 border-t border-slate-700/50 space-y-1">
+          <button
+            onClick={toggleTheme}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-slate-800 hover:text-gray-200 transition-colors"
+          >
+            <span>{theme === 'dark' ? '☀️' : '🌙'}</span>
+            <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+          </button>
           <button
             onClick={async () => {
               await fetch('/api/auth/logout', { method: 'POST' });
@@ -233,7 +243,7 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-64 bg-slate-900 border-r border-slate-700/50 flex-col min-h-screen shrink-0">
+      <aside className="hidden md:flex w-64 bg-slate-900 border-r border-slate-700/50 flex-col min-h-screen shrink-0 transition-colors duration-200">
         {navContent}
       </aside>
 
@@ -241,7 +251,7 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
       {open && (
         <div className="fixed inset-0 z-40 md:hidden">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-          <aside className="absolute left-0 top-0 bottom-0 w-72 bg-slate-900 border-r border-slate-700/50 flex flex-col z-50 overflow-y-auto">
+          <aside className="absolute left-0 top-0 bottom-0 w-72 bg-slate-900 border-r border-slate-700/50 flex flex-col z-50 overflow-y-auto transition-colors duration-200">
             <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
               <h1 className="text-lg font-bold text-white">💊 DistroFarmasi</h1>
               <button onClick={onClose} className="text-gray-400 hover:text-white p-1">
@@ -272,7 +282,10 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
                 <span>📄</span><span>Piutang & Cicilan</span>
               </Link>
               <SubMenu label="Laporan" icon="📊" items={laporanItems} pathname={pathname} openKey={openMenus.laporan} toggleKey={() => toggle('laporan')} />
-              <div className="pt-4 mt-4 border-t border-slate-700/50">
+              <div className="pt-4 mt-4 border-t border-slate-700/50 space-y-1">
+                <button onClick={toggleTheme} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-slate-800 hover:text-gray-200 transition-colors">
+                  <span>{theme === 'dark' ? '☀️' : '🌙'}</span><span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                </button>
                 <button onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); router.push('/'); }} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-red-600/20 hover:text-red-400 transition-colors">
                   <span>🚪</span><span>Logout</span>
                 </button>
