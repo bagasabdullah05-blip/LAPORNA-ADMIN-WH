@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  nama      String
+  password  String
+  role      String   @default("STAFF")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  penjualan       Penjualan[]
+  cicilan         Cicilan[]
+  auditLogs       AuditLog[]
+  opnameLogs      OpnameLog[]
+}
+
+model Apotek {
+  id       String @id @default(cuid())
+  nama     String
+  alamat   String
+  noTelp   String
+  pemilik  String
+  pic      String
+  aktif    Boolean @default(true)
+
+  konsinyasiLogs   KonsinyasiLog[]
+  stokKonsinyasi   StokKonsinyasi[]
+  penjualan        Penjualan[]
+  returLogs        ReturLog[]
+  opnameLogs       OpnameLog[]
+
+  @@index([nama])
+}
+
+model Produk {
+  id       String @id @default(cuid())
+  nama     String
+  kategori String
+  satuan   String
+  bentuk   String
+
+  hargaMember     Float @default(0)
+  hargaAgent      Float @default(0)
+  hargaKarton     Float @default(0)
+  hargaAptCash    Float @default(0)
+  hargaKonsinyasi Float @default(0)
+  hargaTerendah   Float @default(0)
+  hpp             Float @default(0)
+
+  stokGudang Int @default(0)
+  minStok    Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  detailPenjualan   DetailPenjualan[]
+  konsinyasiLogs    KonsinyasiLog[]
+  stokKonsinyasi    StokKonsinyasi[]
+  barangMasukLogs   BarangMasukLog[]
+  returLogs         ReturLog[]
+  opnameLogs        OpnameLog[]
+
+  @@index([nama])
+  @@index([kategori])
+}
+
+model Sales {
+  id     String @id @default(cuid())
+  nama   String
+  noTelp String
+  alamat String
+  aktif  Boolean @default(true)
+
+  penjualan       Penjualan[]
+  konsinyasiLogs  KonsinyasiLog[]
+}
+
+model Pelanggan {
+  id     String @id @default(cuid())
+  nama   String
+  tipe   String @default("UMUM")
+  alamat String
+  noTelp String
+
+  penjualan Penjualan[]
+
+  @@index([nama])
+}
+
+model KonsinyasiLog {
+  id         String   @id @default(cuid())
+  apotekId   String
+  produkId   String
+  salesId    String
+  jumlah     Int
+  tanggal    DateTime @default(now())
+  keterangan String
+
+  apotek Apotek @relation(fields: [apotekId], references: [id])
+  produk Produk @relation(fields: [produkId], references: [id])
+  sales  Sales  @relation(fields: [salesId], references: [id])
+
+  @@index([apotekId])
+  @@index([produkId])
+  @@index([salesId])
+  @@index([tanggal])
+}
+
+model StokKonsinyasi {
+  id       String @id @default(cuid())
+  apotekId String
+  produkId String
+  jumlah   Int    @default(0)
+
+  apotek Apotek @relation(fields: [apotekId], references: [id])
+  produk Produk @relation(fields: [produkId], references: [id])
+
+  @@unique([apotekId, produkId])
+  @@index([produkId])
+}
+
+model BarangMasukLog {
+  id         String   @id @default(cuid())
+  produkId   String
+  jumlah     Int
+  hargaBeli  Float
+  keterangan String
+  tanggal    DateTime @default(now())
+
+  produk Produk @relation(fields: [produkId], references: [id])
+
+  @@index([produkId])
+  @@index([tanggal])
+}
+
+model ReturLog {
+  id         String   @id @default(cuid())
+  apotekId   String
+  produkId   String
+  jumlah     Int
+  keterangan String
+  tanggal    DateTime @default(now())
+
+  apotek Apotek @relation(fields: [apotekId], references: [id])
+  produk Produk @relation(fields: [produkId], references: [id])
+
+  @@index([apotekId])
+  @@index([produkId])
+  @@index([tanggal])
+}
+
+model OpnameLog {
+  id         String   @id @default(cuid())
+  userId     String
+  tipe       String
+  apotekId   String?
+  produkId   String
+  stokSistem Int
+  stokFisik  Int
+  selisih    Int
+  keterangan String
+  tanggal    DateTime @default(now())
+
+  user   User    @relation(fields: [userId], references: [id])
+  apotek Apotek? @relation(fields: [apotekId], references: [id])
+  produk Produk  @relation(fields: [produkId], references: [id])
+
+  @@index([userId])
+  @@index([produkId])
+  @@index([apotekId])
+  @@index([tanggal])
+}
+
+model Penjualan {
+  id            String   @id @default(cuid())
+  tipe          String
+  apotekId      String?
+  pelangganId   String?
+  salesId       String
+  userId        String
+  tanggal       DateTime @default(now())
+  totalBayar    Float
+  metodeBayar   String
+  status        String   @default("SELESAI")
+
+  apotek    Apotek?    @relation(fields: [apotekId], references: [id])
+  pelanggan Pelanggan? @relation(fields: [pelangganId], references: [id])
+  sales     Sales      @relation(fields: [salesId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+
+  details          DetailPenjualan[]
+  piutang          Piutang?
+
+  @@index([tanggal])
+  @@index([salesId])
+  @@index([apotekId])
+  @@index([pelangganId])
+  @@index([userId])
+  @@index([status])
+  @@index([tanggal, salesId])
+  @@index([tipe])
+}
+
+model DetailPenjualan {
+  id            String @id @default(cuid())
+  penjualanId   String
+  produkId      String
+  jumlah        Int
+  tipeHarga     String
+  hargaSatuan   Float
+  subtotal      Float
+
+  penjualan Penjualan @relation(fields: [penjualanId], references: [id])
+  produk    Produk    @relation(fields: [produkId], references: [id])
+
+  @@index([penjualanId])
+  @@index([produkId])
+  @@index([produkId, subtotal, jumlah])
+}
+
+model Piutang {
+  id          String   @id @default(cuid())
+  penjualanId String   @unique
+  total       Float
+  sisa        Float
+  status      String   @default("BELUM_LUNAS")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  penjualan Penjualan @relation(fields: [penjualanId], references: [id])
+  cicilan   Cicilan[]
+
+  @@index([status])
+  @@index([status, createdAt])
+}
+
+model Cicilan {
+  id          String   @id @default(cuid())
+  piutangId   String
+  userId      String
+  jumlahBayar Float
+  tanggalBayar DateTime @default(now())
+  keterangan  String
+
+  piutang Piutang @relation(fields: [piutangId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@index([piutangId])
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  aksi      String
+  entitas   String
+  entitasId String
+  detail    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entitas, entitasId])
+}
