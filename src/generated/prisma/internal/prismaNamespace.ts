@@ -412,7 +412,8 @@ export const ModelName = {
   DetailPenjualan: 'DetailPenjualan',
   Piutang: 'Piutang',
   Cicilan: 'Cicilan',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  Setoran: 'Setoran'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "apotek" | "produk" | "sales" | "setoranHarian" | "pelanggan" | "konsinyasiLog" | "stokKonsinyasi" | "barangMasukLog" | "returLog" | "opnameLog" | "penjualan" | "detailPenjualan" | "piutang" | "cicilan" | "auditLog"
+    modelProps: "user" | "apotek" | "produk" | "sales" | "setoranHarian" | "pelanggan" | "konsinyasiLog" | "stokKonsinyasi" | "barangMasukLog" | "returLog" | "opnameLog" | "penjualan" | "detailPenjualan" | "piutang" | "cicilan" | "auditLog" | "setoran"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1616,6 +1617,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Setoran: {
+      payload: Prisma.$SetoranPayload<ExtArgs>
+      fields: Prisma.SetoranFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SetoranFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SetoranFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>
+        }
+        findFirst: {
+          args: Prisma.SetoranFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SetoranFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>
+        }
+        findMany: {
+          args: Prisma.SetoranFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>[]
+        }
+        create: {
+          args: Prisma.SetoranCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>
+        }
+        createMany: {
+          args: Prisma.SetoranCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SetoranCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>[]
+        }
+        delete: {
+          args: Prisma.SetoranDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>
+        }
+        update: {
+          args: Prisma.SetoranUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>
+        }
+        deleteMany: {
+          args: Prisma.SetoranDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SetoranUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SetoranUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>[]
+        }
+        upsert: {
+          args: Prisma.SetoranUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranPayload>
+        }
+        aggregate: {
+          args: Prisma.SetoranAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSetoran>
+        }
+        groupBy: {
+          args: Prisma.SetoranGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SetoranGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SetoranCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SetoranCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1832,8 +1907,10 @@ export type DetailPenjualanScalarFieldEnum = (typeof DetailPenjualanScalarFieldE
 export const PiutangScalarFieldEnum = {
   id: 'id',
   penjualanId: 'penjualanId',
+  apotekId: 'apotekId',
   total: 'total',
   sisa: 'sisa',
+  keterangan: 'keterangan',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1865,6 +1942,24 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const SetoranScalarFieldEnum = {
+  id: 'id',
+  tipe: 'tipe',
+  penjualanId: 'penjualanId',
+  piutangId: 'piutangId',
+  apotekId: 'apotekId',
+  jumlah: 'jumlah',
+  tanggal: 'tanggal',
+  keterangan: 'keterangan',
+  disetujui: 'disetujui',
+  disetujuiOleh: 'disetujuiOleh',
+  tanggalAcc: 'tanggalAcc',
+  createdAt: 'createdAt'
+} as const
+
+export type SetoranScalarFieldEnum = (typeof SetoranScalarFieldEnum)[keyof typeof SetoranScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2126,6 +2221,7 @@ export type GlobalOmitConfig = {
   piutang?: Prisma.PiutangOmit
   cicilan?: Prisma.CicilanOmit
   auditLog?: Prisma.AuditLogOmit
+  setoran?: Prisma.SetoranOmit
 }
 
 /* Types for Logging */

@@ -29,6 +29,8 @@ export async function GET(request: NextRequest) {
             pelanggan: true,
           },
         },
+        apotek: true,
+        cicilan: true,
       },
       orderBy: { createdAt: "desc" },
     });
@@ -36,6 +38,50 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, data: piutang });
   } catch (error) {
     console.error("Get piutang error:", error);
+    return NextResponse.json(
+      { success: false, message: "Terjadi kesalahan" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "Tidak terautentikasi" },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { apotekId, total, sisa, keterangan } = body;
+
+    if (!total || total <= 0) {
+      return NextResponse.json(
+        { success: false, message: "Total harus lebih dari 0" },
+        { status: 400 }
+      );
+    }
+
+    const piutang = await prisma.piutang.create({
+      data: {
+        penjualanId: null,
+        apotekId: apotekId || null,
+        total,
+        sisa: sisa ?? total,
+        keterangan: keterangan || "",
+      },
+      include: {
+        penjualan: { include: { apotek: true, pelanggan: true } },
+        apotek: true,
+      },
+    });
+
+    return NextResponse.json({ success: true, data: piutang }, { status: 201 });
+  } catch (error) {
+    console.error("Create piutang error:", error);
     return NextResponse.json(
       { success: false, message: "Terjadi kesalahan" },
       { status: 500 }

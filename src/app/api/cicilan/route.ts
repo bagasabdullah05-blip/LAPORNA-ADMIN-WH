@@ -50,11 +50,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { piutangId, userId, jumlahBayar, keterangan } = body;
+    const { piutangId, jumlahBayar, keterangan } = body;
 
-    if (!piutangId || !userId || !jumlahBayar) {
+    if (!piutangId || !jumlahBayar) {
       return NextResponse.json(
-        { success: false, message: "piutangId, userId, dan jumlahBayar harus diisi" },
+        { success: false, message: "piutangId dan jumlahBayar harus diisi" },
         { status: 400 }
       );
     }
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       const cicilan = await tx.cicilan.create({
         data: {
           piutangId,
-          userId,
+          userId: user.userId,
           jumlahBayar,
           keterangan: keterangan || "",
         },
@@ -98,6 +98,31 @@ export async function POST(request: NextRequest) {
         data: {
           sisa: newSisa,
           status: newSisa <= 0 ? "LUNAS" : "BELUM_LUNAS",
+        },
+      });
+
+      const piutangWithPenjualan = await tx.piutang.findUnique({
+        where: { id: piutangId },
+        include: { penjualan: { select: { tipe: true, apotekId: true } } },
+      });
+
+      const tipePenjualan = piutangWithPenjualan?.penjualan?.tipe;
+      const apotekId = piutangWithPenjualan?.penjualan?.apotekId || piutangWithPenjualan?.apotekId || null;
+
+      const isKonsi = tipePenjualan === "KONSINYASI";
+      const tipeSetoran = newSisa <= 0
+        ? (isKonsi ? "KONSINYASI_LUNAS" : "PELUNASAN")
+        : (isKonsi ? "KONSINYASI_CICIL" : "CICILAN");
+
+      await tx.setoran.create({
+        data: {
+          tipe: tipeSetoran,
+          penjualanId: piutangWithPenjualan?.penjualanId || null,
+          piutangId,
+          apotekId,
+          jumlah: jumlahBayar,
+          keterangan: keterangan || `Auto: Cicilan ${newSisa <= 0 ? '(lunas)' : `(sisa Rp ${newSisa.toLocaleString('id-ID')})`}`,
+          disetujui: false,
         },
       });
 

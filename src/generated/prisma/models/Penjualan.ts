@@ -262,6 +262,7 @@ export type PenjualanWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   details?: Prisma.DetailPenjualanListRelationFilter
   piutang?: Prisma.XOR<Prisma.PiutangNullableScalarRelationFilter, Prisma.PiutangWhereInput> | null
+  setoran?: Prisma.SetoranListRelationFilter
 }
 
 export type PenjualanOrderByWithRelationInput = {
@@ -281,6 +282,7 @@ export type PenjualanOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   details?: Prisma.DetailPenjualanOrderByRelationAggregateInput
   piutang?: Prisma.PiutangOrderByWithRelationInput
+  setoran?: Prisma.SetoranOrderByRelationAggregateInput
 }
 
 export type PenjualanWhereUniqueInput = Prisma.AtLeast<{
@@ -303,6 +305,7 @@ export type PenjualanWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   details?: Prisma.DetailPenjualanListRelationFilter
   piutang?: Prisma.XOR<Prisma.PiutangNullableScalarRelationFilter, Prisma.PiutangWhereInput> | null
+  setoran?: Prisma.SetoranListRelationFilter
 }, "id">
 
 export type PenjualanOrderByWithAggregationInput = {
@@ -352,6 +355,7 @@ export type PenjualanCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutPenjualanInput
   details?: Prisma.DetailPenjualanCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanUncheckedCreateInput = {
@@ -367,6 +371,7 @@ export type PenjualanUncheckedCreateInput = {
   status?: string
   details?: Prisma.DetailPenjualanUncheckedCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangUncheckedCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanUpdateInput = {
@@ -382,6 +387,7 @@ export type PenjualanUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPenjualanNestedInput
   details?: Prisma.DetailPenjualanUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateInput = {
@@ -397,6 +403,7 @@ export type PenjualanUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   details?: Prisma.DetailPenjualanUncheckedUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUncheckedUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanCreateManyInput = {
@@ -494,6 +501,11 @@ export type PenjualanSumOrderByAggregateInput = {
 export type PenjualanScalarRelationFilter = {
   is?: Prisma.PenjualanWhereInput
   isNot?: Prisma.PenjualanWhereInput
+}
+
+export type PenjualanNullableScalarRelationFilter = {
+  is?: Prisma.PenjualanWhereInput | null
+  isNot?: Prisma.PenjualanWhereInput | null
 }
 
 export type PenjualanCreateNestedManyWithoutUserInput = {
@@ -684,12 +696,30 @@ export type PenjualanCreateNestedOneWithoutPiutangInput = {
   connect?: Prisma.PenjualanWhereUniqueInput
 }
 
-export type PenjualanUpdateOneRequiredWithoutPiutangNestedInput = {
+export type PenjualanUpdateOneWithoutPiutangNestedInput = {
   create?: Prisma.XOR<Prisma.PenjualanCreateWithoutPiutangInput, Prisma.PenjualanUncheckedCreateWithoutPiutangInput>
   connectOrCreate?: Prisma.PenjualanCreateOrConnectWithoutPiutangInput
   upsert?: Prisma.PenjualanUpsertWithoutPiutangInput
+  disconnect?: Prisma.PenjualanWhereInput | boolean
+  delete?: Prisma.PenjualanWhereInput | boolean
   connect?: Prisma.PenjualanWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.PenjualanUpdateToOneWithWhereWithoutPiutangInput, Prisma.PenjualanUpdateWithoutPiutangInput>, Prisma.PenjualanUncheckedUpdateWithoutPiutangInput>
+}
+
+export type PenjualanCreateNestedOneWithoutSetoranInput = {
+  create?: Prisma.XOR<Prisma.PenjualanCreateWithoutSetoranInput, Prisma.PenjualanUncheckedCreateWithoutSetoranInput>
+  connectOrCreate?: Prisma.PenjualanCreateOrConnectWithoutSetoranInput
+  connect?: Prisma.PenjualanWhereUniqueInput
+}
+
+export type PenjualanUpdateOneWithoutSetoranNestedInput = {
+  create?: Prisma.XOR<Prisma.PenjualanCreateWithoutSetoranInput, Prisma.PenjualanUncheckedCreateWithoutSetoranInput>
+  connectOrCreate?: Prisma.PenjualanCreateOrConnectWithoutSetoranInput
+  upsert?: Prisma.PenjualanUpsertWithoutSetoranInput
+  disconnect?: Prisma.PenjualanWhereInput | boolean
+  delete?: Prisma.PenjualanWhereInput | boolean
+  connect?: Prisma.PenjualanWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PenjualanUpdateToOneWithWhereWithoutSetoranInput, Prisma.PenjualanUpdateWithoutSetoranInput>, Prisma.PenjualanUncheckedUpdateWithoutSetoranInput>
 }
 
 export type PenjualanCreateWithoutUserInput = {
@@ -704,6 +734,7 @@ export type PenjualanCreateWithoutUserInput = {
   sales: Prisma.SalesCreateNestedOneWithoutPenjualanInput
   details?: Prisma.DetailPenjualanCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanUncheckedCreateWithoutUserInput = {
@@ -718,6 +749,7 @@ export type PenjualanUncheckedCreateWithoutUserInput = {
   status?: string
   details?: Prisma.DetailPenjualanUncheckedCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangUncheckedCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanCreateOrConnectWithoutUserInput = {
@@ -774,6 +806,7 @@ export type PenjualanCreateWithoutApotekInput = {
   user: Prisma.UserCreateNestedOneWithoutPenjualanInput
   details?: Prisma.DetailPenjualanCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanUncheckedCreateWithoutApotekInput = {
@@ -788,6 +821,7 @@ export type PenjualanUncheckedCreateWithoutApotekInput = {
   status?: string
   details?: Prisma.DetailPenjualanUncheckedCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangUncheckedCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanCreateOrConnectWithoutApotekInput = {
@@ -828,6 +862,7 @@ export type PenjualanCreateWithoutSalesInput = {
   user: Prisma.UserCreateNestedOneWithoutPenjualanInput
   details?: Prisma.DetailPenjualanCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanUncheckedCreateWithoutSalesInput = {
@@ -842,6 +877,7 @@ export type PenjualanUncheckedCreateWithoutSalesInput = {
   status?: string
   details?: Prisma.DetailPenjualanUncheckedCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangUncheckedCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanCreateOrConnectWithoutSalesInput = {
@@ -882,6 +918,7 @@ export type PenjualanCreateWithoutPelangganInput = {
   user: Prisma.UserCreateNestedOneWithoutPenjualanInput
   details?: Prisma.DetailPenjualanCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanUncheckedCreateWithoutPelangganInput = {
@@ -896,6 +933,7 @@ export type PenjualanUncheckedCreateWithoutPelangganInput = {
   status?: string
   details?: Prisma.DetailPenjualanUncheckedCreateNestedManyWithoutPenjualanInput
   piutang?: Prisma.PiutangUncheckedCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanCreateOrConnectWithoutPelangganInput = {
@@ -936,6 +974,7 @@ export type PenjualanCreateWithoutDetailsInput = {
   sales: Prisma.SalesCreateNestedOneWithoutPenjualanInput
   user: Prisma.UserCreateNestedOneWithoutPenjualanInput
   piutang?: Prisma.PiutangCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanUncheckedCreateWithoutDetailsInput = {
@@ -950,6 +989,7 @@ export type PenjualanUncheckedCreateWithoutDetailsInput = {
   metodeBayar: string
   status?: string
   piutang?: Prisma.PiutangUncheckedCreateNestedOneWithoutPenjualanInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanCreateOrConnectWithoutDetailsInput = {
@@ -980,6 +1020,7 @@ export type PenjualanUpdateWithoutDetailsInput = {
   sales?: Prisma.SalesUpdateOneRequiredWithoutPenjualanNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateWithoutDetailsInput = {
@@ -994,6 +1035,7 @@ export type PenjualanUncheckedUpdateWithoutDetailsInput = {
   metodeBayar?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   piutang?: Prisma.PiutangUncheckedUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanCreateWithoutPiutangInput = {
@@ -1008,6 +1050,7 @@ export type PenjualanCreateWithoutPiutangInput = {
   sales: Prisma.SalesCreateNestedOneWithoutPenjualanInput
   user: Prisma.UserCreateNestedOneWithoutPenjualanInput
   details?: Prisma.DetailPenjualanCreateNestedManyWithoutPenjualanInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanUncheckedCreateWithoutPiutangInput = {
@@ -1022,6 +1065,7 @@ export type PenjualanUncheckedCreateWithoutPiutangInput = {
   metodeBayar: string
   status?: string
   details?: Prisma.DetailPenjualanUncheckedCreateNestedManyWithoutPenjualanInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPenjualanInput
 }
 
 export type PenjualanCreateOrConnectWithoutPiutangInput = {
@@ -1052,6 +1096,7 @@ export type PenjualanUpdateWithoutPiutangInput = {
   sales?: Prisma.SalesUpdateOneRequiredWithoutPenjualanNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutPenjualanNestedInput
   details?: Prisma.DetailPenjualanUpdateManyWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateWithoutPiutangInput = {
@@ -1066,6 +1111,83 @@ export type PenjualanUncheckedUpdateWithoutPiutangInput = {
   metodeBayar?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   details?: Prisma.DetailPenjualanUncheckedUpdateManyWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPenjualanNestedInput
+}
+
+export type PenjualanCreateWithoutSetoranInput = {
+  id?: string
+  tipe: string
+  tanggal?: Date | string
+  totalBayar: number
+  metodeBayar: string
+  status?: string
+  apotek?: Prisma.ApotekCreateNestedOneWithoutPenjualanInput
+  pelanggan?: Prisma.PelangganCreateNestedOneWithoutPenjualanInput
+  sales: Prisma.SalesCreateNestedOneWithoutPenjualanInput
+  user: Prisma.UserCreateNestedOneWithoutPenjualanInput
+  details?: Prisma.DetailPenjualanCreateNestedManyWithoutPenjualanInput
+  piutang?: Prisma.PiutangCreateNestedOneWithoutPenjualanInput
+}
+
+export type PenjualanUncheckedCreateWithoutSetoranInput = {
+  id?: string
+  tipe: string
+  apotekId?: string | null
+  pelangganId?: string | null
+  salesId: string
+  userId: string
+  tanggal?: Date | string
+  totalBayar: number
+  metodeBayar: string
+  status?: string
+  details?: Prisma.DetailPenjualanUncheckedCreateNestedManyWithoutPenjualanInput
+  piutang?: Prisma.PiutangUncheckedCreateNestedOneWithoutPenjualanInput
+}
+
+export type PenjualanCreateOrConnectWithoutSetoranInput = {
+  where: Prisma.PenjualanWhereUniqueInput
+  create: Prisma.XOR<Prisma.PenjualanCreateWithoutSetoranInput, Prisma.PenjualanUncheckedCreateWithoutSetoranInput>
+}
+
+export type PenjualanUpsertWithoutSetoranInput = {
+  update: Prisma.XOR<Prisma.PenjualanUpdateWithoutSetoranInput, Prisma.PenjualanUncheckedUpdateWithoutSetoranInput>
+  create: Prisma.XOR<Prisma.PenjualanCreateWithoutSetoranInput, Prisma.PenjualanUncheckedCreateWithoutSetoranInput>
+  where?: Prisma.PenjualanWhereInput
+}
+
+export type PenjualanUpdateToOneWithWhereWithoutSetoranInput = {
+  where?: Prisma.PenjualanWhereInput
+  data: Prisma.XOR<Prisma.PenjualanUpdateWithoutSetoranInput, Prisma.PenjualanUncheckedUpdateWithoutSetoranInput>
+}
+
+export type PenjualanUpdateWithoutSetoranInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tipe?: Prisma.StringFieldUpdateOperationsInput | string
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  totalBayar?: Prisma.FloatFieldUpdateOperationsInput | number
+  metodeBayar?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  apotek?: Prisma.ApotekUpdateOneWithoutPenjualanNestedInput
+  pelanggan?: Prisma.PelangganUpdateOneWithoutPenjualanNestedInput
+  sales?: Prisma.SalesUpdateOneRequiredWithoutPenjualanNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPenjualanNestedInput
+  details?: Prisma.DetailPenjualanUpdateManyWithoutPenjualanNestedInput
+  piutang?: Prisma.PiutangUpdateOneWithoutPenjualanNestedInput
+}
+
+export type PenjualanUncheckedUpdateWithoutSetoranInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tipe?: Prisma.StringFieldUpdateOperationsInput | string
+  apotekId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pelangganId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salesId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  totalBayar?: Prisma.FloatFieldUpdateOperationsInput | number
+  metodeBayar?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  details?: Prisma.DetailPenjualanUncheckedUpdateManyWithoutPenjualanNestedInput
+  piutang?: Prisma.PiutangUncheckedUpdateOneWithoutPenjualanNestedInput
 }
 
 export type PenjualanCreateManyUserInput = {
@@ -1092,6 +1214,7 @@ export type PenjualanUpdateWithoutUserInput = {
   sales?: Prisma.SalesUpdateOneRequiredWithoutPenjualanNestedInput
   details?: Prisma.DetailPenjualanUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateWithoutUserInput = {
@@ -1106,6 +1229,7 @@ export type PenjualanUncheckedUpdateWithoutUserInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   details?: Prisma.DetailPenjualanUncheckedUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUncheckedUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateManyWithoutUserInput = {
@@ -1144,6 +1268,7 @@ export type PenjualanUpdateWithoutApotekInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPenjualanNestedInput
   details?: Prisma.DetailPenjualanUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateWithoutApotekInput = {
@@ -1158,6 +1283,7 @@ export type PenjualanUncheckedUpdateWithoutApotekInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   details?: Prisma.DetailPenjualanUncheckedUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUncheckedUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateManyWithoutApotekInput = {
@@ -1196,6 +1322,7 @@ export type PenjualanUpdateWithoutSalesInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPenjualanNestedInput
   details?: Prisma.DetailPenjualanUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateWithoutSalesInput = {
@@ -1210,6 +1337,7 @@ export type PenjualanUncheckedUpdateWithoutSalesInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   details?: Prisma.DetailPenjualanUncheckedUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUncheckedUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateManyWithoutSalesInput = {
@@ -1248,6 +1376,7 @@ export type PenjualanUpdateWithoutPelangganInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPenjualanNestedInput
   details?: Prisma.DetailPenjualanUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateWithoutPelangganInput = {
@@ -1262,6 +1391,7 @@ export type PenjualanUncheckedUpdateWithoutPelangganInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   details?: Prisma.DetailPenjualanUncheckedUpdateManyWithoutPenjualanNestedInput
   piutang?: Prisma.PiutangUncheckedUpdateOneWithoutPenjualanNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPenjualanNestedInput
 }
 
 export type PenjualanUncheckedUpdateManyWithoutPelangganInput = {
@@ -1283,10 +1413,12 @@ export type PenjualanUncheckedUpdateManyWithoutPelangganInput = {
 
 export type PenjualanCountOutputType = {
   details: number
+  setoran: number
 }
 
 export type PenjualanCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   details?: boolean | PenjualanCountOutputTypeCountDetailsArgs
+  setoran?: boolean | PenjualanCountOutputTypeCountSetoranArgs
 }
 
 /**
@@ -1304,6 +1436,13 @@ export type PenjualanCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ex
  */
 export type PenjualanCountOutputTypeCountDetailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DetailPenjualanWhereInput
+}
+
+/**
+ * PenjualanCountOutputType without action
+ */
+export type PenjualanCountOutputTypeCountSetoranArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SetoranWhereInput
 }
 
 
@@ -1324,6 +1463,7 @@ export type PenjualanSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   details?: boolean | Prisma.Penjualan$detailsArgs<ExtArgs>
   piutang?: boolean | Prisma.Penjualan$piutangArgs<ExtArgs>
+  setoran?: boolean | Prisma.Penjualan$setoranArgs<ExtArgs>
   _count?: boolean | Prisma.PenjualanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["penjualan"]>
 
@@ -1382,6 +1522,7 @@ export type PenjualanInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   details?: boolean | Prisma.Penjualan$detailsArgs<ExtArgs>
   piutang?: boolean | Prisma.Penjualan$piutangArgs<ExtArgs>
+  setoran?: boolean | Prisma.Penjualan$setoranArgs<ExtArgs>
   _count?: boolean | Prisma.PenjualanCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PenjualanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1406,6 +1547,7 @@ export type $PenjualanPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     user: Prisma.$UserPayload<ExtArgs>
     details: Prisma.$DetailPenjualanPayload<ExtArgs>[]
     piutang: Prisma.$PiutangPayload<ExtArgs> | null
+    setoran: Prisma.$SetoranPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1818,6 +1960,7 @@ export interface Prisma__PenjualanClient<T, Null = never, ExtArgs extends runtim
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   details<T extends Prisma.Penjualan$detailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penjualan$detailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DetailPenjualanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   piutang<T extends Prisma.Penjualan$piutangArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penjualan$piutangArgs<ExtArgs>>): Prisma.Prisma__PiutangClient<runtime.Types.Result.GetResult<Prisma.$PiutangPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  setoran<T extends Prisma.Penjualan$setoranArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penjualan$setoranArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SetoranPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2336,6 +2479,30 @@ export type Penjualan$piutangArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   include?: Prisma.PiutangInclude<ExtArgs> | null
   where?: Prisma.PiutangWhereInput
+}
+
+/**
+ * Penjualan.setoran
+ */
+export type Penjualan$setoranArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Setoran
+   */
+  select?: Prisma.SetoranSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Setoran
+   */
+  omit?: Prisma.SetoranOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SetoranInclude<ExtArgs> | null
+  where?: Prisma.SetoranWhereInput
+  orderBy?: Prisma.SetoranOrderByWithRelationInput | Prisma.SetoranOrderByWithRelationInput[]
+  cursor?: Prisma.SetoranWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SetoranScalarFieldEnum | Prisma.SetoranScalarFieldEnum[]
 }
 
 /**

@@ -121,3 +121,8 @@ export type Cicilan = Prisma.CicilanModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model Setoran
+ * 
+ */
+export type Setoran = Prisma.SetoranModel

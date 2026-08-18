@@ -1,19 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import SearchSelect from '@/components/SearchSelect';
 
 interface Piutang {
   id: string;
-  penjualanId: string;
+  penjualanId: string | null;
+  apotekId: string | null;
   total: number;
   sisa: number;
+  keterangan: string;
   status: string;
   createdAt: string;
   penjualan: {
     tanggal: string;
     apotek: { nama: string } | null;
     pelanggan: { nama: string } | null;
-  };
+  } | null;
+  apotek: { nama: string } | null;
   cicilan: {
     id: string;
     jumlahBayar: number;
@@ -30,6 +34,9 @@ export default function PiutangPage() {
   const [showCicilanModal, setShowCicilanModal] = useState(false);
   const [cicilanForm, setCicilanForm] = useState({ jumlahBayar: 0, keterangan: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [showPiutangLamaModal, setShowPiutangLamaModal] = useState(false);
+  const [piutangLamaForm, setPiutangLamaForm] = useState({ apotekId: '', total: 0, keterangan: '' });
+  const [apotekList, setApotekList] = useState<{ id: string; nama: string }[]>([]);
 
   const fetchData = () => {
     setLoading(true);
@@ -43,6 +50,13 @@ export default function PiutangPage() {
 
   // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
   useEffect(() => { fetchData(); }, [filter]);
+
+  useEffect(() => {
+    fetch('/api/apotek')
+      .then((res) => res.json())
+      .then((d) => { if (d.success) setApotekList(d.data); })
+      .catch(() => {});
+  }, []);
 
   const openDetail = (item: Piutang) => {
     setSelectedPiutang(item);
@@ -75,8 +89,36 @@ export default function PiutangPage() {
     }
   };
 
+  const handlePiutangLama = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/piutang', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          apotekId: piutangLamaForm.apotekId || null,
+          total: piutangLamaForm.total,
+          sisa: piutangLamaForm.total,
+          keterangan: piutangLamaForm.keterangan,
+        }),
+      });
+      if (res.ok) {
+        setShowPiutangLamaModal(false);
+        setPiutangLamaForm({ apotekId: '', total: 0, keterangan: '' });
+        fetchData();
+      }
+    } catch {
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const getNamaPelanggan = (item: Piutang) => {
-    return item.penjualan.apotek?.nama || item.penjualan.pelanggan?.nama || '-';
+    if (item.penjualan) {
+      return item.penjualan.apotek?.nama || item.penjualan.pelanggan?.nama || '-';
+    }
+    return item.apotek?.nama || '-';
   };
 
   return (
@@ -97,6 +139,12 @@ export default function PiutangPage() {
             {f === 'SEMUA' ? 'Semua' : f === 'BELUM_LUNAS' ? 'Belum Lunas' : 'Lunas'}
           </button>
         ))}
+        <button
+          onClick={() => setShowPiutangLamaModal(true)}
+          className="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-amber-600 text-white hover:bg-amber-700 ml-auto"
+        >
+          Input Piutang Lama
+        </button>
       </div>
 
       <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
@@ -194,9 +242,15 @@ export default function PiutangPage() {
                     {selectedPiutang.status === 'LUNAS' ? 'Lunas' : 'Belum Lunas'}
                   </span>
                 </div>
+                {selectedPiutang.keterangan && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Keterangan</span>
+                    <span className="text-white">{selectedPiutang.keterangan}</span>
+                  </div>
+                )}
               </div>
 
-              {selectedPiutang.cicilan.length > 0 && (
+              {selectedPiutang.cicilan && selectedPiutang.cicilan.length > 0 && (
                 <div>
                   <h3 className="text-sm font-medium text-gray-400 mb-2">Riwayat Cicilan</h3>
                   <div className="space-y-2">
@@ -264,6 +318,64 @@ export default function PiutangPage() {
                     className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-green-800 text-white rounded-lg text-sm font-medium transition-colors"
                   >
                     {submitting ? 'Menyimpan...' : 'Bayar'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+      {showPiutangLamaModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 border border-gray-800 rounded-xl w-full max-w-md">
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-white mb-4">Input Piutang Lama</h2>
+              <form onSubmit={handlePiutangLama} className="space-y-4">
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Apotek</label>
+                  <SearchSelect
+                    options={apotekList.map((a) => ({ value: a.id, label: a.nama }))}
+                    value={piutangLamaForm.apotekId}
+                    onChange={(val) => setPiutangLamaForm({ ...piutangLamaForm, apotekId: val })}
+                    placeholder="Pilih apotek (opsional)"
+                    searchPlaceholder="Cari apotek..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Total</label>
+                  <input
+                    type="number"
+                    value={piutangLamaForm.total || ''}
+                    onChange={(e) => setPiutangLamaForm({ ...piutangLamaForm, total: Number(e.target.value) })}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    min={1}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Keterangan</label>
+                  <input
+                    type="text"
+                    value={piutangLamaForm.keterangan}
+                    onChange={(e) => setPiutangLamaForm({ ...piutangLamaForm, keterangan: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Opsional"
+                  />
+                </div>
+                <div className="flex justify-end gap-2 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowPiutangLamaModal(false)}
+                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="px-4 py-2 bg-amber-600 hover:bg-amber-700 disabled:bg-amber-800 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    {submitting ? 'Menyimpan...' : 'Simpan'}
                   </button>
                 </div>
               </form>

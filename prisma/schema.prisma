@@ -36,6 +36,8 @@ model Apotek {
   penjualan        Penjualan[]
   returLogs        ReturLog[]
   opnameLogs       OpnameLog[]
+  piutang          Piutang[]
+  setoran          Setoran[]
 
   @@index([nama])
 }
@@ -215,6 +217,7 @@ model Penjualan {
 
   details          DetailPenjualan[]
   piutang          Piutang?
+  setoran          Setoran[]
 
   @@index([tanggal])
   @@index([salesId])
@@ -244,19 +247,24 @@ model DetailPenjualan {
 }
 
 model Piutang {
-  id          String   @id @default(cuid())
-  penjualanId String   @unique
+  id          String    @id @default(cuid())
+  penjualanId String?   @unique
+  apotekId    String?
   total       Float
   sisa        Float
-  status      String   @default("BELUM_LUNAS")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  keterangan  String    @default("")
+  status      String    @default("BELUM_LUNAS")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  penjualan Penjualan @relation(fields: [penjualanId], references: [id])
+  penjualan Penjualan? @relation(fields: [penjualanId], references: [id])
+  apotek    Apotek?    @relation(fields: [apotekId], references: [id])
   cicilan   Cicilan[]
+  setoran   Setoran[]
 
   @@index([status])
   @@index([status, createdAt])
+  @@index([apotekId])
 }
 
 model Cicilan {
@@ -287,4 +295,30 @@ model AuditLog {
 
   @@index([userId])
   @@index([entitas, entitasId])
+}
+
+model Setoran {
+  id              String    @id @default(cuid())
+  tipe            String                    // CICILAN, KONSINYASI_LUNAS, TUNAI
+  penjualanId     String?
+  piutangId       String?
+  apotekId        String?
+  jumlah          Float
+  tanggal         DateTime  @default(now())
+  keterangan      String    @default("")
+  disetujui       Boolean   @default(false)
+  disetujuiOleh   String?
+  tanggalAcc      DateTime?
+  createdAt       DateTime  @default(now())
+
+  penjualan Penjualan? @relation(fields: [penjualanId], references: [id])
+  piutang   Piutang?   @relation(fields: [piutangId], references: [id])
+  apotek    Apotek?    @relation(fields: [apotekId], references: [id])
+
+  @@index([tipe])
+  @@index([disetujui])
+  @@index([tanggal])
+  @@index([apotekId])
+  @@index([penjualanId])
+  @@index([piutangId])
 }

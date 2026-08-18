@@ -97,7 +97,108 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Create barang masuk error:", error);
     return NextResponse.json(
-      { success: false, message: "Terjadi kesalahan" },
+      { success: false, message: error instanceof Error ? error.message : "Terjadi kesalahan" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "Tidak terautentikasi" },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { id, produkId, jumlah, hargaBeli, keterangan, tanggal } = body;
+
+    if (!id || !produkId || !jumlah || !hargaBeli) {
+      return NextResponse.json(
+        { success: false, message: "Data tidak lengkap" },
+        { status: 400 }
+      );
+    }
+
+    const existing = await prisma.barangMasukLog.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ success: false, message: "Data barang masuk tidak ditemukan" }, { status: 404 });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.produk.update({
+        where: { id: existing.produkId },
+        data: { stokGudang: { decrement: existing.jumlah } },
+      });
+
+      await tx.produk.update({
+        where: { id: produkId },
+        data: { stokGudang: { increment: jumlah } },
+      });
+
+      await tx.barangMasukLog.update({
+        where: { id },
+        data: {
+          produkId,
+          jumlah,
+          hargaBeli,
+          keterangan: keterangan || "",
+          tanggal: tanggal ? new Date(tanggal) : existing.tanggal,
+        },
+      });
+    });
+
+    return NextResponse.json({ success: true, message: "Barang masuk berhasil diupdate" });
+  } catch (error) {
+    console.error("Update barang masuk error:", error);
+    return NextResponse.json(
+      { success: false, message: error instanceof Error ? error.message : "Terjadi kesalahan" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "Tidak terautentikasi" },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { id } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: "ID harus diisi" },
+        { status: 400 }
+      );
+    }
+
+    const existing = await prisma.barangMasukLog.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ success: false, message: "Data barang masuk tidak ditemukan" }, { status: 404 });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.produk.update({
+        where: { id: existing.produkId },
+        data: { stokGudang: { decrement: existing.jumlah } },
+      });
+      await tx.barangMasukLog.delete({ where: { id } });
+    });
+
+    return NextResponse.json({ success: true, message: "Barang masuk berhasil dihapus" });
+  } catch (error) {
+    console.error("Delete barang masuk error:", error);
+    return NextResponse.json(
+      { success: false, message: error instanceof Error ? error.message : "Terjadi kesalahan" },
       { status: 500 }
     );
   }

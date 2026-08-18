@@ -52,6 +52,10 @@ const konsinyasiItems = [
 
 const laporanItems = [
   { label: 'Penjualan', href: '/laporan/penjualan', icon: 'dollar' },
+  { label: 'Penjualan per Produk', href: '/laporan/penjualan-produk', icon: 'cube' },
+  { label: 'Penerimaan Kas', href: '/laporan/penerimaan-kas', icon: 'dollar' },
+  { label: 'Setoran', href: '/laporan/setoran', icon: 'dollar' },
+  { label: 'Piutang', href: '/piutang', icon: 'fileText' },
   { label: 'Margin', href: '/laporan/margin', icon: 'trending' },
   { label: 'Perputaran', href: '/laporan/perputaran', icon: 'refresh' },
   { label: 'Pareto Produk', href: '/laporan/pareto', icon: 'barChart' },
@@ -231,6 +235,18 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
           <span>Piutang & Cicilan</span>
         </Link>
 
+        <Link
+          href="/setoran/approval"
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+            pathname === '/setoran/approval'
+              ? 'bg-indigo-600/20 text-indigo-400'
+              : 'text-gray-400 hover:bg-slate-800 hover:text-gray-200'
+          }`}
+        >
+          {I.checkCircle()}
+          <span>Approval Setoran</span>
+        </Link>
+
         <SubMenu
           label="Laporan"
           icon="barChart"
@@ -303,6 +319,9 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
               </Link>
               <Link href="/piutang" className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${pathname === '/piutang' ? 'bg-indigo-600/20 text-indigo-400' : 'text-gray-400 hover:bg-slate-800 hover:text-gray-200'}`}>
                 {I.fileText()}<span>Piutang & Cicilan</span>
+              </Link>
+              <Link href="/setoran/approval" className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${pathname === '/setoran/approval' ? 'bg-indigo-600/20 text-indigo-400' : 'text-gray-400 hover:bg-slate-800 hover:text-gray-200'}`}>
+                {I.checkCircle()}<span>Approval Setoran</span>
               </Link>
               <SubMenu label="Laporan" icon="barChart" items={laporanItems} pathname={pathname} openKey={openMenus.laporan} toggleKey={() => toggle('laporan')} />
               <div className="pt-4 mt-4 border-t border-slate-700/50 space-y-1">

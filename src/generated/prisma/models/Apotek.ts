@@ -203,6 +203,8 @@ export type ApotekWhereInput = {
   penjualan?: Prisma.PenjualanListRelationFilter
   returLogs?: Prisma.ReturLogListRelationFilter
   opnameLogs?: Prisma.OpnameLogListRelationFilter
+  piutang?: Prisma.PiutangListRelationFilter
+  setoran?: Prisma.SetoranListRelationFilter
 }
 
 export type ApotekOrderByWithRelationInput = {
@@ -218,6 +220,8 @@ export type ApotekOrderByWithRelationInput = {
   penjualan?: Prisma.PenjualanOrderByRelationAggregateInput
   returLogs?: Prisma.ReturLogOrderByRelationAggregateInput
   opnameLogs?: Prisma.OpnameLogOrderByRelationAggregateInput
+  piutang?: Prisma.PiutangOrderByRelationAggregateInput
+  setoran?: Prisma.SetoranOrderByRelationAggregateInput
 }
 
 export type ApotekWhereUniqueInput = Prisma.AtLeast<{
@@ -236,6 +240,8 @@ export type ApotekWhereUniqueInput = Prisma.AtLeast<{
   penjualan?: Prisma.PenjualanListRelationFilter
   returLogs?: Prisma.ReturLogListRelationFilter
   opnameLogs?: Prisma.OpnameLogListRelationFilter
+  piutang?: Prisma.PiutangListRelationFilter
+  setoran?: Prisma.SetoranListRelationFilter
 }, "id">
 
 export type ApotekOrderByWithAggregationInput = {
@@ -277,6 +283,8 @@ export type ApotekCreateInput = {
   penjualan?: Prisma.PenjualanCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekUncheckedCreateInput = {
@@ -292,6 +300,8 @@ export type ApotekUncheckedCreateInput = {
   penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogUncheckedCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogUncheckedCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangUncheckedCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekUpdateInput = {
@@ -307,6 +317,8 @@ export type ApotekUpdateInput = {
   penjualan?: Prisma.PenjualanUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekUncheckedUpdateInput = {
@@ -322,6 +334,8 @@ export type ApotekUncheckedUpdateInput = {
   penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUncheckedUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUncheckedUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUncheckedUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekCreateManyInput = {
@@ -472,6 +486,38 @@ export type ApotekUpdateOneWithoutPenjualanNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ApotekUpdateToOneWithWhereWithoutPenjualanInput, Prisma.ApotekUpdateWithoutPenjualanInput>, Prisma.ApotekUncheckedUpdateWithoutPenjualanInput>
 }
 
+export type ApotekCreateNestedOneWithoutPiutangInput = {
+  create?: Prisma.XOR<Prisma.ApotekCreateWithoutPiutangInput, Prisma.ApotekUncheckedCreateWithoutPiutangInput>
+  connectOrCreate?: Prisma.ApotekCreateOrConnectWithoutPiutangInput
+  connect?: Prisma.ApotekWhereUniqueInput
+}
+
+export type ApotekUpdateOneWithoutPiutangNestedInput = {
+  create?: Prisma.XOR<Prisma.ApotekCreateWithoutPiutangInput, Prisma.ApotekUncheckedCreateWithoutPiutangInput>
+  connectOrCreate?: Prisma.ApotekCreateOrConnectWithoutPiutangInput
+  upsert?: Prisma.ApotekUpsertWithoutPiutangInput
+  disconnect?: Prisma.ApotekWhereInput | boolean
+  delete?: Prisma.ApotekWhereInput | boolean
+  connect?: Prisma.ApotekWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApotekUpdateToOneWithWhereWithoutPiutangInput, Prisma.ApotekUpdateWithoutPiutangInput>, Prisma.ApotekUncheckedUpdateWithoutPiutangInput>
+}
+
+export type ApotekCreateNestedOneWithoutSetoranInput = {
+  create?: Prisma.XOR<Prisma.ApotekCreateWithoutSetoranInput, Prisma.ApotekUncheckedCreateWithoutSetoranInput>
+  connectOrCreate?: Prisma.ApotekCreateOrConnectWithoutSetoranInput
+  connect?: Prisma.ApotekWhereUniqueInput
+}
+
+export type ApotekUpdateOneWithoutSetoranNestedInput = {
+  create?: Prisma.XOR<Prisma.ApotekCreateWithoutSetoranInput, Prisma.ApotekUncheckedCreateWithoutSetoranInput>
+  connectOrCreate?: Prisma.ApotekCreateOrConnectWithoutSetoranInput
+  upsert?: Prisma.ApotekUpsertWithoutSetoranInput
+  disconnect?: Prisma.ApotekWhereInput | boolean
+  delete?: Prisma.ApotekWhereInput | boolean
+  connect?: Prisma.ApotekWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApotekUpdateToOneWithWhereWithoutSetoranInput, Prisma.ApotekUpdateWithoutSetoranInput>, Prisma.ApotekUncheckedUpdateWithoutSetoranInput>
+}
+
 export type ApotekCreateWithoutKonsinyasiLogsInput = {
   id?: string
   nama: string
@@ -484,6 +530,8 @@ export type ApotekCreateWithoutKonsinyasiLogsInput = {
   penjualan?: Prisma.PenjualanCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekUncheckedCreateWithoutKonsinyasiLogsInput = {
@@ -498,6 +546,8 @@ export type ApotekUncheckedCreateWithoutKonsinyasiLogsInput = {
   penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogUncheckedCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogUncheckedCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangUncheckedCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekCreateOrConnectWithoutKonsinyasiLogsInput = {
@@ -528,6 +578,8 @@ export type ApotekUpdateWithoutKonsinyasiLogsInput = {
   penjualan?: Prisma.PenjualanUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekUncheckedUpdateWithoutKonsinyasiLogsInput = {
@@ -542,6 +594,8 @@ export type ApotekUncheckedUpdateWithoutKonsinyasiLogsInput = {
   penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUncheckedUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUncheckedUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUncheckedUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekCreateWithoutStokKonsinyasiInput = {
@@ -556,6 +610,8 @@ export type ApotekCreateWithoutStokKonsinyasiInput = {
   penjualan?: Prisma.PenjualanCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekUncheckedCreateWithoutStokKonsinyasiInput = {
@@ -570,6 +626,8 @@ export type ApotekUncheckedCreateWithoutStokKonsinyasiInput = {
   penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogUncheckedCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogUncheckedCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangUncheckedCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekCreateOrConnectWithoutStokKonsinyasiInput = {
@@ -600,6 +658,8 @@ export type ApotekUpdateWithoutStokKonsinyasiInput = {
   penjualan?: Prisma.PenjualanUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekUncheckedUpdateWithoutStokKonsinyasiInput = {
@@ -614,6 +674,8 @@ export type ApotekUncheckedUpdateWithoutStokKonsinyasiInput = {
   penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUncheckedUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUncheckedUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUncheckedUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekCreateWithoutReturLogsInput = {
@@ -628,6 +690,8 @@ export type ApotekCreateWithoutReturLogsInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiCreateNestedManyWithoutApotekInput
   penjualan?: Prisma.PenjualanCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekUncheckedCreateWithoutReturLogsInput = {
@@ -642,6 +706,8 @@ export type ApotekUncheckedCreateWithoutReturLogsInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedCreateNestedManyWithoutApotekInput
   penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogUncheckedCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangUncheckedCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekCreateOrConnectWithoutReturLogsInput = {
@@ -672,6 +738,8 @@ export type ApotekUpdateWithoutReturLogsInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUpdateManyWithoutApotekNestedInput
   penjualan?: Prisma.PenjualanUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekUncheckedUpdateWithoutReturLogsInput = {
@@ -686,6 +754,8 @@ export type ApotekUncheckedUpdateWithoutReturLogsInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedUpdateManyWithoutApotekNestedInput
   penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUncheckedUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUncheckedUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekCreateWithoutOpnameLogsInput = {
@@ -700,6 +770,8 @@ export type ApotekCreateWithoutOpnameLogsInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiCreateNestedManyWithoutApotekInput
   penjualan?: Prisma.PenjualanCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekUncheckedCreateWithoutOpnameLogsInput = {
@@ -714,6 +786,8 @@ export type ApotekUncheckedCreateWithoutOpnameLogsInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedCreateNestedManyWithoutApotekInput
   penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogUncheckedCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangUncheckedCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekCreateOrConnectWithoutOpnameLogsInput = {
@@ -744,6 +818,8 @@ export type ApotekUpdateWithoutOpnameLogsInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUpdateManyWithoutApotekNestedInput
   penjualan?: Prisma.PenjualanUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekUncheckedUpdateWithoutOpnameLogsInput = {
@@ -758,6 +834,8 @@ export type ApotekUncheckedUpdateWithoutOpnameLogsInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedUpdateManyWithoutApotekNestedInput
   penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUncheckedUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUncheckedUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekCreateWithoutPenjualanInput = {
@@ -772,6 +850,8 @@ export type ApotekCreateWithoutPenjualanInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekUncheckedCreateWithoutPenjualanInput = {
@@ -786,6 +866,8 @@ export type ApotekUncheckedCreateWithoutPenjualanInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedCreateNestedManyWithoutApotekInput
   returLogs?: Prisma.ReturLogUncheckedCreateNestedManyWithoutApotekInput
   opnameLogs?: Prisma.OpnameLogUncheckedCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangUncheckedCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutApotekInput
 }
 
 export type ApotekCreateOrConnectWithoutPenjualanInput = {
@@ -816,6 +898,8 @@ export type ApotekUpdateWithoutPenjualanInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutApotekNestedInput
 }
 
 export type ApotekUncheckedUpdateWithoutPenjualanInput = {
@@ -830,6 +914,168 @@ export type ApotekUncheckedUpdateWithoutPenjualanInput = {
   stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedUpdateManyWithoutApotekNestedInput
   returLogs?: Prisma.ReturLogUncheckedUpdateManyWithoutApotekNestedInput
   opnameLogs?: Prisma.OpnameLogUncheckedUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUncheckedUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutApotekNestedInput
+}
+
+export type ApotekCreateWithoutPiutangInput = {
+  id?: string
+  nama: string
+  alamat: string
+  noTelp: string
+  pemilik: string
+  pic: string
+  aktif?: boolean
+  konsinyasiLogs?: Prisma.KonsinyasiLogCreateNestedManyWithoutApotekInput
+  stokKonsinyasi?: Prisma.StokKonsinyasiCreateNestedManyWithoutApotekInput
+  penjualan?: Prisma.PenjualanCreateNestedManyWithoutApotekInput
+  returLogs?: Prisma.ReturLogCreateNestedManyWithoutApotekInput
+  opnameLogs?: Prisma.OpnameLogCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutApotekInput
+}
+
+export type ApotekUncheckedCreateWithoutPiutangInput = {
+  id?: string
+  nama: string
+  alamat: string
+  noTelp: string
+  pemilik: string
+  pic: string
+  aktif?: boolean
+  konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedCreateNestedManyWithoutApotekInput
+  stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedCreateNestedManyWithoutApotekInput
+  penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutApotekInput
+  returLogs?: Prisma.ReturLogUncheckedCreateNestedManyWithoutApotekInput
+  opnameLogs?: Prisma.OpnameLogUncheckedCreateNestedManyWithoutApotekInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutApotekInput
+}
+
+export type ApotekCreateOrConnectWithoutPiutangInput = {
+  where: Prisma.ApotekWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApotekCreateWithoutPiutangInput, Prisma.ApotekUncheckedCreateWithoutPiutangInput>
+}
+
+export type ApotekUpsertWithoutPiutangInput = {
+  update: Prisma.XOR<Prisma.ApotekUpdateWithoutPiutangInput, Prisma.ApotekUncheckedUpdateWithoutPiutangInput>
+  create: Prisma.XOR<Prisma.ApotekCreateWithoutPiutangInput, Prisma.ApotekUncheckedCreateWithoutPiutangInput>
+  where?: Prisma.ApotekWhereInput
+}
+
+export type ApotekUpdateToOneWithWhereWithoutPiutangInput = {
+  where?: Prisma.ApotekWhereInput
+  data: Prisma.XOR<Prisma.ApotekUpdateWithoutPiutangInput, Prisma.ApotekUncheckedUpdateWithoutPiutangInput>
+}
+
+export type ApotekUpdateWithoutPiutangInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  noTelp?: Prisma.StringFieldUpdateOperationsInput | string
+  pemilik?: Prisma.StringFieldUpdateOperationsInput | string
+  pic?: Prisma.StringFieldUpdateOperationsInput | string
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  konsinyasiLogs?: Prisma.KonsinyasiLogUpdateManyWithoutApotekNestedInput
+  stokKonsinyasi?: Prisma.StokKonsinyasiUpdateManyWithoutApotekNestedInput
+  penjualan?: Prisma.PenjualanUpdateManyWithoutApotekNestedInput
+  returLogs?: Prisma.ReturLogUpdateManyWithoutApotekNestedInput
+  opnameLogs?: Prisma.OpnameLogUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutApotekNestedInput
+}
+
+export type ApotekUncheckedUpdateWithoutPiutangInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  noTelp?: Prisma.StringFieldUpdateOperationsInput | string
+  pemilik?: Prisma.StringFieldUpdateOperationsInput | string
+  pic?: Prisma.StringFieldUpdateOperationsInput | string
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedUpdateManyWithoutApotekNestedInput
+  stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedUpdateManyWithoutApotekNestedInput
+  penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutApotekNestedInput
+  returLogs?: Prisma.ReturLogUncheckedUpdateManyWithoutApotekNestedInput
+  opnameLogs?: Prisma.OpnameLogUncheckedUpdateManyWithoutApotekNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutApotekNestedInput
+}
+
+export type ApotekCreateWithoutSetoranInput = {
+  id?: string
+  nama: string
+  alamat: string
+  noTelp: string
+  pemilik: string
+  pic: string
+  aktif?: boolean
+  konsinyasiLogs?: Prisma.KonsinyasiLogCreateNestedManyWithoutApotekInput
+  stokKonsinyasi?: Prisma.StokKonsinyasiCreateNestedManyWithoutApotekInput
+  penjualan?: Prisma.PenjualanCreateNestedManyWithoutApotekInput
+  returLogs?: Prisma.ReturLogCreateNestedManyWithoutApotekInput
+  opnameLogs?: Prisma.OpnameLogCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangCreateNestedManyWithoutApotekInput
+}
+
+export type ApotekUncheckedCreateWithoutSetoranInput = {
+  id?: string
+  nama: string
+  alamat: string
+  noTelp: string
+  pemilik: string
+  pic: string
+  aktif?: boolean
+  konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedCreateNestedManyWithoutApotekInput
+  stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedCreateNestedManyWithoutApotekInput
+  penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutApotekInput
+  returLogs?: Prisma.ReturLogUncheckedCreateNestedManyWithoutApotekInput
+  opnameLogs?: Prisma.OpnameLogUncheckedCreateNestedManyWithoutApotekInput
+  piutang?: Prisma.PiutangUncheckedCreateNestedManyWithoutApotekInput
+}
+
+export type ApotekCreateOrConnectWithoutSetoranInput = {
+  where: Prisma.ApotekWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApotekCreateWithoutSetoranInput, Prisma.ApotekUncheckedCreateWithoutSetoranInput>
+}
+
+export type ApotekUpsertWithoutSetoranInput = {
+  update: Prisma.XOR<Prisma.ApotekUpdateWithoutSetoranInput, Prisma.ApotekUncheckedUpdateWithoutSetoranInput>
+  create: Prisma.XOR<Prisma.ApotekCreateWithoutSetoranInput, Prisma.ApotekUncheckedCreateWithoutSetoranInput>
+  where?: Prisma.ApotekWhereInput
+}
+
+export type ApotekUpdateToOneWithWhereWithoutSetoranInput = {
+  where?: Prisma.ApotekWhereInput
+  data: Prisma.XOR<Prisma.ApotekUpdateWithoutSetoranInput, Prisma.ApotekUncheckedUpdateWithoutSetoranInput>
+}
+
+export type ApotekUpdateWithoutSetoranInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  noTelp?: Prisma.StringFieldUpdateOperationsInput | string
+  pemilik?: Prisma.StringFieldUpdateOperationsInput | string
+  pic?: Prisma.StringFieldUpdateOperationsInput | string
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  konsinyasiLogs?: Prisma.KonsinyasiLogUpdateManyWithoutApotekNestedInput
+  stokKonsinyasi?: Prisma.StokKonsinyasiUpdateManyWithoutApotekNestedInput
+  penjualan?: Prisma.PenjualanUpdateManyWithoutApotekNestedInput
+  returLogs?: Prisma.ReturLogUpdateManyWithoutApotekNestedInput
+  opnameLogs?: Prisma.OpnameLogUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUpdateManyWithoutApotekNestedInput
+}
+
+export type ApotekUncheckedUpdateWithoutSetoranInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  noTelp?: Prisma.StringFieldUpdateOperationsInput | string
+  pemilik?: Prisma.StringFieldUpdateOperationsInput | string
+  pic?: Prisma.StringFieldUpdateOperationsInput | string
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedUpdateManyWithoutApotekNestedInput
+  stokKonsinyasi?: Prisma.StokKonsinyasiUncheckedUpdateManyWithoutApotekNestedInput
+  penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutApotekNestedInput
+  returLogs?: Prisma.ReturLogUncheckedUpdateManyWithoutApotekNestedInput
+  opnameLogs?: Prisma.OpnameLogUncheckedUpdateManyWithoutApotekNestedInput
+  piutang?: Prisma.PiutangUncheckedUpdateManyWithoutApotekNestedInput
 }
 
 
@@ -843,6 +1089,8 @@ export type ApotekCountOutputType = {
   penjualan: number
   returLogs: number
   opnameLogs: number
+  piutang: number
+  setoran: number
 }
 
 export type ApotekCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -851,6 +1099,8 @@ export type ApotekCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   penjualan?: boolean | ApotekCountOutputTypeCountPenjualanArgs
   returLogs?: boolean | ApotekCountOutputTypeCountReturLogsArgs
   opnameLogs?: boolean | ApotekCountOutputTypeCountOpnameLogsArgs
+  piutang?: boolean | ApotekCountOutputTypeCountPiutangArgs
+  setoran?: boolean | ApotekCountOutputTypeCountSetoranArgs
 }
 
 /**
@@ -898,6 +1148,20 @@ export type ApotekCountOutputTypeCountOpnameLogsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.OpnameLogWhereInput
 }
 
+/**
+ * ApotekCountOutputType without action
+ */
+export type ApotekCountOutputTypeCountPiutangArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PiutangWhereInput
+}
+
+/**
+ * ApotekCountOutputType without action
+ */
+export type ApotekCountOutputTypeCountSetoranArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SetoranWhereInput
+}
+
 
 export type ApotekSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -912,6 +1176,8 @@ export type ApotekSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   penjualan?: boolean | Prisma.Apotek$penjualanArgs<ExtArgs>
   returLogs?: boolean | Prisma.Apotek$returLogsArgs<ExtArgs>
   opnameLogs?: boolean | Prisma.Apotek$opnameLogsArgs<ExtArgs>
+  piutang?: boolean | Prisma.Apotek$piutangArgs<ExtArgs>
+  setoran?: boolean | Prisma.Apotek$setoranArgs<ExtArgs>
   _count?: boolean | Prisma.ApotekCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["apotek"]>
 
@@ -952,6 +1218,8 @@ export type ApotekInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   penjualan?: boolean | Prisma.Apotek$penjualanArgs<ExtArgs>
   returLogs?: boolean | Prisma.Apotek$returLogsArgs<ExtArgs>
   opnameLogs?: boolean | Prisma.Apotek$opnameLogsArgs<ExtArgs>
+  piutang?: boolean | Prisma.Apotek$piutangArgs<ExtArgs>
+  setoran?: boolean | Prisma.Apotek$setoranArgs<ExtArgs>
   _count?: boolean | Prisma.ApotekCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ApotekIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -965,6 +1233,8 @@ export type $ApotekPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     penjualan: Prisma.$PenjualanPayload<ExtArgs>[]
     returLogs: Prisma.$ReturLogPayload<ExtArgs>[]
     opnameLogs: Prisma.$OpnameLogPayload<ExtArgs>[]
+    piutang: Prisma.$PiutangPayload<ExtArgs>[]
+    setoran: Prisma.$SetoranPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1373,6 +1643,8 @@ export interface Prisma__ApotekClient<T, Null = never, ExtArgs extends runtime.T
   penjualan<T extends Prisma.Apotek$penjualanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Apotek$penjualanArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PenjualanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   returLogs<T extends Prisma.Apotek$returLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Apotek$returLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReturLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   opnameLogs<T extends Prisma.Apotek$opnameLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Apotek$opnameLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OpnameLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  piutang<T extends Prisma.Apotek$piutangArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Apotek$piutangArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PiutangPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  setoran<T extends Prisma.Apotek$setoranArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Apotek$setoranArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SetoranPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1919,6 +2191,54 @@ export type Apotek$opnameLogsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.OpnameLogScalarFieldEnum | Prisma.OpnameLogScalarFieldEnum[]
+}
+
+/**
+ * Apotek.piutang
+ */
+export type Apotek$piutangArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Piutang
+   */
+  select?: Prisma.PiutangSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Piutang
+   */
+  omit?: Prisma.PiutangOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PiutangInclude<ExtArgs> | null
+  where?: Prisma.PiutangWhereInput
+  orderBy?: Prisma.PiutangOrderByWithRelationInput | Prisma.PiutangOrderByWithRelationInput[]
+  cursor?: Prisma.PiutangWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PiutangScalarFieldEnum | Prisma.PiutangScalarFieldEnum[]
+}
+
+/**
+ * Apotek.setoran
+ */
+export type Apotek$setoranArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Setoran
+   */
+  select?: Prisma.SetoranSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Setoran
+   */
+  omit?: Prisma.SetoranOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SetoranInclude<ExtArgs> | null
+  where?: Prisma.SetoranWhereInput
+  orderBy?: Prisma.SetoranOrderByWithRelationInput | Prisma.SetoranOrderByWithRelationInput[]
+  cursor?: Prisma.SetoranWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SetoranScalarFieldEnum | Prisma.SetoranScalarFieldEnum[]
 }
 
 /**

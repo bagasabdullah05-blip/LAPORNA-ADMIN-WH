@@ -23,6 +23,7 @@ export default function OpnamePage() {
   const [riwayat, setRiwayat] = useState<OpnameLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   const [form, setForm] = useState({
     tipe: 'GUDANG',
@@ -59,17 +60,46 @@ export default function OpnamePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setMessage({ type: '', text: '' });
     try {
-      await fetch('/api/opname', {
+      const res = await fetch('/api/opname', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, stokSistem, tanggal: form.tanggal }),
       });
-      setForm({ tipe: 'GUDANG', apotekId: '', produkId: '', stokFisik: 0, keterangan: '', tanggal: new Date().toISOString().slice(0, 10) });
-      fetchData();
+      const data = await res.json();
+      if (data.success) {
+        setMessage({ type: 'success', text: 'Opname berhasil disimpan' });
+        setForm({ tipe: 'GUDANG', apotekId: '', produkId: '', stokFisik: 0, keterangan: '', tanggal: new Date().toISOString().slice(0, 10) });
+        fetchData();
+      } else {
+        setMessage({ type: 'error', text: data.message || 'Gagal menyimpan' });
+      }
     } catch {
+      setMessage({ type: 'error', text: 'Terjadi kesalahan' });
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Hapus data opname ini? Stok akan dikembalikan ke stok sistem.')) return;
+    setMessage({ type: '', text: '' });
+    try {
+      const res = await fetch('/api/opname', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setMessage({ type: 'success', text: 'Opname dihapus, stok dikembalikan' });
+        fetchData();
+      } else {
+        setMessage({ type: 'error', text: data.message || 'Gagal menghapus' });
+      }
+    } catch {
+      setMessage({ type: 'error', text: 'Terjadi kesalahan' });
     }
   };
 
@@ -77,27 +107,23 @@ export default function OpnamePage() {
     <div>
       <h1 className="text-2xl font-bold text-white mb-6">Opname</h1>
 
+      {message.text && (
+        <div className={`px-4 py-3 rounded-lg mb-4 text-sm ${message.type === 'success' ? 'bg-green-500/10 border border-green-500/30 text-green-400' : 'bg-red-500/10 border border-red-500/30 text-red-400'}`}>
+          {message.text}
+        </div>
+      )}
+
       <div className="bg-gray-900 rounded-xl border border-gray-800 p-6 mb-6">
         <h2 className="text-lg font-semibold text-white mb-4">Form Opname</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm text-gray-400 mb-1">Tanggal</label>
-              <input
-                type="date"
-                value={form.tanggal}
-                onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                required
-              />
+              <input type="date" value={form.tanggal} onChange={(e) => setForm({ ...form, tanggal: e.target.value })} className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">Tipe</label>
-              <select
-                value={form.tipe}
-                onChange={(e) => setForm({ ...form, tipe: e.target.value, apotekId: '' })}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
+              <select value={form.tipe} onChange={(e) => setForm({ ...form, tipe: e.target.value, apotekId: '' })} className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <option value="GUDANG">GUDANG</option>
                 <option value="APOTEK">APOTEK</option>
               </select>
@@ -105,33 +131,16 @@ export default function OpnamePage() {
             {form.tipe === 'APOTEK' && (
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Apotek</label>
-                <SearchSelect
-                  options={apotekList.map((a) => ({ value: a.id, label: a.nama }))}
-                  value={form.apotekId}
-                  onChange={(val) => setForm({ ...form, apotekId: val })}
-                  placeholder="Pilih Apotek"
-                />
+                <SearchSelect options={apotekList.map((a) => ({ value: a.id, label: a.nama }))} value={form.apotekId} onChange={(val) => setForm({ ...form, apotekId: val })} placeholder="Pilih Apotek" />
               </div>
             )}
             <div>
               <label className="block text-sm text-gray-400 mb-1">Produk</label>
-              <SearchSelect
-                options={produkList.map((p) => ({ value: p.id, label: p.nama }))}
-                value={form.produkId}
-                onChange={(val) => setForm({ ...form, produkId: val })}
-                placeholder="Pilih Produk"
-              />
+              <SearchSelect options={produkList.map((p) => ({ value: p.id, label: p.nama }))} value={form.produkId} onChange={(val) => setForm({ ...form, produkId: val })} placeholder="Pilih Produk" />
             </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">Stok Fisik</label>
-              <input
-                type="number"
-                value={form.stokFisik || ''}
-                onChange={(e) => setForm({ ...form, stokFisik: Number(e.target.value) })}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                min={0}
-                required
-              />
+              <input type="number" value={form.stokFisik || ''} onChange={(e) => setForm({ ...form, stokFisik: Number(e.target.value) })} className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" min={0} required />
             </div>
           </div>
 
@@ -157,20 +166,10 @@ export default function OpnamePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm text-gray-400 mb-1">Keterangan</label>
-              <input
-                type="text"
-                value={form.keterangan}
-                onChange={(e) => setForm({ ...form, keterangan: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="Opsional"
-              />
+              <input type="text" value={form.keterangan} onChange={(e) => setForm({ ...form, keterangan: e.target.value })} className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Opsional" />
             </div>
             <div className="flex items-end">
-              <button
-                type="submit"
-                disabled={submitting}
-                className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-800 text-white rounded-lg text-sm font-medium transition-colors"
-              >
+              <button type="submit" disabled={submitting} className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-800 text-white rounded-lg text-sm font-medium transition-colors">
                 {submitting ? 'Menyimpan...' : 'Simpan Opname'}
               </button>
             </div>
@@ -195,31 +194,21 @@ export default function OpnamePage() {
                 <th className="px-4 py-3 text-right text-gray-400 font-medium">Stok Fisik</th>
                 <th className="px-4 py-3 text-right text-gray-400 font-medium">Selisih</th>
                 <th className="px-4 py-3 text-left text-gray-400 font-medium">Keterangan</th>
+                <th className="px-4 py-3 text-center text-gray-400 font-medium">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-gray-500">Memuat data...</td>
-                </tr>
+                <tr><td colSpan={10} className="px-4 py-8 text-center text-gray-500">Memuat data...</td></tr>
               ) : riwayat.length === 0 ? (
-                <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-gray-500">Tidak ada data</td>
-                </tr>
+                <tr><td colSpan={10} className="px-4 py-8 text-center text-gray-500">Tidak ada data</td></tr>
               ) : (
                 riwayat.map((item, idx) => (
-                  <tr
-                    key={item.id}
-                    className={`border-b border-gray-800/50 hover:bg-gray-800/50 ${
-                      idx % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/30'
-                    }`}
-                  >
+                  <tr key={item.id} className={`border-b border-gray-800/50 hover:bg-gray-800/50 ${idx % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/30'}`}>
                     <td className="px-4 py-3 text-gray-300">{idx + 1}</td>
                     <td className="px-4 py-3 text-gray-300">{new Date(item.tanggal).toLocaleDateString('id-ID')}</td>
                     <td className="px-4 py-3 text-center">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        item.tipe === 'GUDANG' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-purple-500/20 text-purple-400'
-                      }`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.tipe === 'GUDANG' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-purple-500/20 text-purple-400'}`}>
                         {item.tipe}
                       </span>
                     </td>
@@ -233,6 +222,9 @@ export default function OpnamePage() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-gray-300">{item.keterangan || '-'}</td>
+                    <td className="px-4 py-3 text-center">
+                      <button onClick={() => handleDelete(item.id)} className="text-red-400 hover:text-red-300 text-xs">Hapus</button>
+                    </td>
                   </tr>
                 ))
               )}

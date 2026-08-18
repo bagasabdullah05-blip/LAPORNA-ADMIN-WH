@@ -39,8 +39,10 @@ export type PiutangSumAggregateOutputType = {
 export type PiutangMinAggregateOutputType = {
   id: string | null
   penjualanId: string | null
+  apotekId: string | null
   total: number | null
   sisa: number | null
+  keterangan: string | null
   status: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -49,8 +51,10 @@ export type PiutangMinAggregateOutputType = {
 export type PiutangMaxAggregateOutputType = {
   id: string | null
   penjualanId: string | null
+  apotekId: string | null
   total: number | null
   sisa: number | null
+  keterangan: string | null
   status: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,8 +63,10 @@ export type PiutangMaxAggregateOutputType = {
 export type PiutangCountAggregateOutputType = {
   id: number
   penjualanId: number
+  apotekId: number
   total: number
   sisa: number
+  keterangan: number
   status: number
   createdAt: number
   updatedAt: number
@@ -81,8 +87,10 @@ export type PiutangSumAggregateInputType = {
 export type PiutangMinAggregateInputType = {
   id?: true
   penjualanId?: true
+  apotekId?: true
   total?: true
   sisa?: true
+  keterangan?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -91,8 +99,10 @@ export type PiutangMinAggregateInputType = {
 export type PiutangMaxAggregateInputType = {
   id?: true
   penjualanId?: true
+  apotekId?: true
   total?: true
   sisa?: true
+  keterangan?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -101,8 +111,10 @@ export type PiutangMaxAggregateInputType = {
 export type PiutangCountAggregateInputType = {
   id?: true
   penjualanId?: true
+  apotekId?: true
   total?: true
   sisa?: true
+  keterangan?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -197,9 +209,11 @@ export type PiutangGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type PiutangGroupByOutputType = {
   id: string
-  penjualanId: string
+  penjualanId: string | null
+  apotekId: string | null
   total: number
   sisa: number
+  keterangan: string
   status: string
   createdAt: Date
   updatedAt: Date
@@ -230,26 +244,34 @@ export type PiutangWhereInput = {
   OR?: Prisma.PiutangWhereInput[]
   NOT?: Prisma.PiutangWhereInput | Prisma.PiutangWhereInput[]
   id?: Prisma.StringFilter<"Piutang"> | string
-  penjualanId?: Prisma.StringFilter<"Piutang"> | string
+  penjualanId?: Prisma.StringNullableFilter<"Piutang"> | string | null
+  apotekId?: Prisma.StringNullableFilter<"Piutang"> | string | null
   total?: Prisma.FloatFilter<"Piutang"> | number
   sisa?: Prisma.FloatFilter<"Piutang"> | number
+  keterangan?: Prisma.StringFilter<"Piutang"> | string
   status?: Prisma.StringFilter<"Piutang"> | string
   createdAt?: Prisma.DateTimeFilter<"Piutang"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Piutang"> | Date | string
-  penjualan?: Prisma.XOR<Prisma.PenjualanScalarRelationFilter, Prisma.PenjualanWhereInput>
+  penjualan?: Prisma.XOR<Prisma.PenjualanNullableScalarRelationFilter, Prisma.PenjualanWhereInput> | null
+  apotek?: Prisma.XOR<Prisma.ApotekNullableScalarRelationFilter, Prisma.ApotekWhereInput> | null
   cicilan?: Prisma.CicilanListRelationFilter
+  setoran?: Prisma.SetoranListRelationFilter
 }
 
 export type PiutangOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  penjualanId?: Prisma.SortOrder
+  penjualanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  apotekId?: Prisma.SortOrderInput | Prisma.SortOrder
   total?: Prisma.SortOrder
   sisa?: Prisma.SortOrder
+  keterangan?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   penjualan?: Prisma.PenjualanOrderByWithRelationInput
+  apotek?: Prisma.ApotekOrderByWithRelationInput
   cicilan?: Prisma.CicilanOrderByRelationAggregateInput
+  setoran?: Prisma.SetoranOrderByRelationAggregateInput
 }
 
 export type PiutangWhereUniqueInput = Prisma.AtLeast<{
@@ -258,20 +280,26 @@ export type PiutangWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PiutangWhereInput | Prisma.PiutangWhereInput[]
   OR?: Prisma.PiutangWhereInput[]
   NOT?: Prisma.PiutangWhereInput | Prisma.PiutangWhereInput[]
+  apotekId?: Prisma.StringNullableFilter<"Piutang"> | string | null
   total?: Prisma.FloatFilter<"Piutang"> | number
   sisa?: Prisma.FloatFilter<"Piutang"> | number
+  keterangan?: Prisma.StringFilter<"Piutang"> | string
   status?: Prisma.StringFilter<"Piutang"> | string
   createdAt?: Prisma.DateTimeFilter<"Piutang"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Piutang"> | Date | string
-  penjualan?: Prisma.XOR<Prisma.PenjualanScalarRelationFilter, Prisma.PenjualanWhereInput>
+  penjualan?: Prisma.XOR<Prisma.PenjualanNullableScalarRelationFilter, Prisma.PenjualanWhereInput> | null
+  apotek?: Prisma.XOR<Prisma.ApotekNullableScalarRelationFilter, Prisma.ApotekWhereInput> | null
   cicilan?: Prisma.CicilanListRelationFilter
+  setoran?: Prisma.SetoranListRelationFilter
 }, "id" | "penjualanId">
 
 export type PiutangOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  penjualanId?: Prisma.SortOrder
+  penjualanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  apotekId?: Prisma.SortOrderInput | Prisma.SortOrder
   total?: Prisma.SortOrder
   sisa?: Prisma.SortOrder
+  keterangan?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -287,9 +315,11 @@ export type PiutangScalarWhereWithAggregatesInput = {
   OR?: Prisma.PiutangScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PiutangScalarWhereWithAggregatesInput | Prisma.PiutangScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Piutang"> | string
-  penjualanId?: Prisma.StringWithAggregatesFilter<"Piutang"> | string
+  penjualanId?: Prisma.StringNullableWithAggregatesFilter<"Piutang"> | string | null
+  apotekId?: Prisma.StringNullableWithAggregatesFilter<"Piutang"> | string | null
   total?: Prisma.FloatWithAggregatesFilter<"Piutang"> | number
   sisa?: Prisma.FloatWithAggregatesFilter<"Piutang"> | number
+  keterangan?: Prisma.StringWithAggregatesFilter<"Piutang"> | string
   status?: Prisma.StringWithAggregatesFilter<"Piutang"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Piutang"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Piutang"> | Date | string
@@ -299,51 +329,65 @@ export type PiutangCreateInput = {
   id?: string
   total: number
   sisa: number
+  keterangan?: string
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  penjualan: Prisma.PenjualanCreateNestedOneWithoutPiutangInput
+  penjualan?: Prisma.PenjualanCreateNestedOneWithoutPiutangInput
+  apotek?: Prisma.ApotekCreateNestedOneWithoutPiutangInput
   cicilan?: Prisma.CicilanCreateNestedManyWithoutPiutangInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPiutangInput
 }
 
 export type PiutangUncheckedCreateInput = {
   id?: string
-  penjualanId: string
+  penjualanId?: string | null
+  apotekId?: string | null
   total: number
   sisa: number
+  keterangan?: string
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   cicilan?: Prisma.CicilanUncheckedCreateNestedManyWithoutPiutangInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPiutangInput
 }
 
 export type PiutangUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  penjualan?: Prisma.PenjualanUpdateOneRequiredWithoutPiutangNestedInput
+  penjualan?: Prisma.PenjualanUpdateOneWithoutPiutangNestedInput
+  apotek?: Prisma.ApotekUpdateOneWithoutPiutangNestedInput
   cicilan?: Prisma.CicilanUpdateManyWithoutPiutangNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPiutangNestedInput
 }
 
 export type PiutangUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  penjualanId?: Prisma.StringFieldUpdateOperationsInput | string
+  penjualanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  apotekId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cicilan?: Prisma.CicilanUncheckedUpdateManyWithoutPiutangNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPiutangNestedInput
 }
 
 export type PiutangCreateManyInput = {
   id?: string
-  penjualanId: string
+  penjualanId?: string | null
+  apotekId?: string | null
   total: number
   sisa: number
+  keterangan?: string
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -353,6 +397,7 @@ export type PiutangUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -360,12 +405,24 @@ export type PiutangUpdateManyMutationInput = {
 
 export type PiutangUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  penjualanId?: Prisma.StringFieldUpdateOperationsInput | string
+  penjualanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  apotekId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PiutangListRelationFilter = {
+  every?: Prisma.PiutangWhereInput
+  some?: Prisma.PiutangWhereInput
+  none?: Prisma.PiutangWhereInput
+}
+
+export type PiutangOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type PiutangNullableScalarRelationFilter = {
@@ -376,8 +433,10 @@ export type PiutangNullableScalarRelationFilter = {
 export type PiutangCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   penjualanId?: Prisma.SortOrder
+  apotekId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   sisa?: Prisma.SortOrder
+  keterangan?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -391,8 +450,10 @@ export type PiutangAvgOrderByAggregateInput = {
 export type PiutangMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   penjualanId?: Prisma.SortOrder
+  apotekId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   sisa?: Prisma.SortOrder
+  keterangan?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -401,8 +462,10 @@ export type PiutangMaxOrderByAggregateInput = {
 export type PiutangMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   penjualanId?: Prisma.SortOrder
+  apotekId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   sisa?: Prisma.SortOrder
+  keterangan?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -416,6 +479,48 @@ export type PiutangSumOrderByAggregateInput = {
 export type PiutangScalarRelationFilter = {
   is?: Prisma.PiutangWhereInput
   isNot?: Prisma.PiutangWhereInput
+}
+
+export type PiutangCreateNestedManyWithoutApotekInput = {
+  create?: Prisma.XOR<Prisma.PiutangCreateWithoutApotekInput, Prisma.PiutangUncheckedCreateWithoutApotekInput> | Prisma.PiutangCreateWithoutApotekInput[] | Prisma.PiutangUncheckedCreateWithoutApotekInput[]
+  connectOrCreate?: Prisma.PiutangCreateOrConnectWithoutApotekInput | Prisma.PiutangCreateOrConnectWithoutApotekInput[]
+  createMany?: Prisma.PiutangCreateManyApotekInputEnvelope
+  connect?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+}
+
+export type PiutangUncheckedCreateNestedManyWithoutApotekInput = {
+  create?: Prisma.XOR<Prisma.PiutangCreateWithoutApotekInput, Prisma.PiutangUncheckedCreateWithoutApotekInput> | Prisma.PiutangCreateWithoutApotekInput[] | Prisma.PiutangUncheckedCreateWithoutApotekInput[]
+  connectOrCreate?: Prisma.PiutangCreateOrConnectWithoutApotekInput | Prisma.PiutangCreateOrConnectWithoutApotekInput[]
+  createMany?: Prisma.PiutangCreateManyApotekInputEnvelope
+  connect?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+}
+
+export type PiutangUpdateManyWithoutApotekNestedInput = {
+  create?: Prisma.XOR<Prisma.PiutangCreateWithoutApotekInput, Prisma.PiutangUncheckedCreateWithoutApotekInput> | Prisma.PiutangCreateWithoutApotekInput[] | Prisma.PiutangUncheckedCreateWithoutApotekInput[]
+  connectOrCreate?: Prisma.PiutangCreateOrConnectWithoutApotekInput | Prisma.PiutangCreateOrConnectWithoutApotekInput[]
+  upsert?: Prisma.PiutangUpsertWithWhereUniqueWithoutApotekInput | Prisma.PiutangUpsertWithWhereUniqueWithoutApotekInput[]
+  createMany?: Prisma.PiutangCreateManyApotekInputEnvelope
+  set?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+  disconnect?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+  delete?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+  connect?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+  update?: Prisma.PiutangUpdateWithWhereUniqueWithoutApotekInput | Prisma.PiutangUpdateWithWhereUniqueWithoutApotekInput[]
+  updateMany?: Prisma.PiutangUpdateManyWithWhereWithoutApotekInput | Prisma.PiutangUpdateManyWithWhereWithoutApotekInput[]
+  deleteMany?: Prisma.PiutangScalarWhereInput | Prisma.PiutangScalarWhereInput[]
+}
+
+export type PiutangUncheckedUpdateManyWithoutApotekNestedInput = {
+  create?: Prisma.XOR<Prisma.PiutangCreateWithoutApotekInput, Prisma.PiutangUncheckedCreateWithoutApotekInput> | Prisma.PiutangCreateWithoutApotekInput[] | Prisma.PiutangUncheckedCreateWithoutApotekInput[]
+  connectOrCreate?: Prisma.PiutangCreateOrConnectWithoutApotekInput | Prisma.PiutangCreateOrConnectWithoutApotekInput[]
+  upsert?: Prisma.PiutangUpsertWithWhereUniqueWithoutApotekInput | Prisma.PiutangUpsertWithWhereUniqueWithoutApotekInput[]
+  createMany?: Prisma.PiutangCreateManyApotekInputEnvelope
+  set?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+  disconnect?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+  delete?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+  connect?: Prisma.PiutangWhereUniqueInput | Prisma.PiutangWhereUniqueInput[]
+  update?: Prisma.PiutangUpdateWithWhereUniqueWithoutApotekInput | Prisma.PiutangUpdateWithWhereUniqueWithoutApotekInput[]
+  updateMany?: Prisma.PiutangUpdateManyWithWhereWithoutApotekInput | Prisma.PiutangUpdateManyWithWhereWithoutApotekInput[]
+  deleteMany?: Prisma.PiutangScalarWhereInput | Prisma.PiutangScalarWhereInput[]
 }
 
 export type PiutangCreateNestedOneWithoutPenjualanInput = {
@@ -464,24 +569,113 @@ export type PiutangUpdateOneRequiredWithoutCicilanNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PiutangUpdateToOneWithWhereWithoutCicilanInput, Prisma.PiutangUpdateWithoutCicilanInput>, Prisma.PiutangUncheckedUpdateWithoutCicilanInput>
 }
 
-export type PiutangCreateWithoutPenjualanInput = {
+export type PiutangCreateNestedOneWithoutSetoranInput = {
+  create?: Prisma.XOR<Prisma.PiutangCreateWithoutSetoranInput, Prisma.PiutangUncheckedCreateWithoutSetoranInput>
+  connectOrCreate?: Prisma.PiutangCreateOrConnectWithoutSetoranInput
+  connect?: Prisma.PiutangWhereUniqueInput
+}
+
+export type PiutangUpdateOneWithoutSetoranNestedInput = {
+  create?: Prisma.XOR<Prisma.PiutangCreateWithoutSetoranInput, Prisma.PiutangUncheckedCreateWithoutSetoranInput>
+  connectOrCreate?: Prisma.PiutangCreateOrConnectWithoutSetoranInput
+  upsert?: Prisma.PiutangUpsertWithoutSetoranInput
+  disconnect?: Prisma.PiutangWhereInput | boolean
+  delete?: Prisma.PiutangWhereInput | boolean
+  connect?: Prisma.PiutangWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PiutangUpdateToOneWithWhereWithoutSetoranInput, Prisma.PiutangUpdateWithoutSetoranInput>, Prisma.PiutangUncheckedUpdateWithoutSetoranInput>
+}
+
+export type PiutangCreateWithoutApotekInput = {
   id?: string
   total: number
   sisa: number
+  keterangan?: string
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  penjualan?: Prisma.PenjualanCreateNestedOneWithoutPiutangInput
   cicilan?: Prisma.CicilanCreateNestedManyWithoutPiutangInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPiutangInput
 }
 
-export type PiutangUncheckedCreateWithoutPenjualanInput = {
+export type PiutangUncheckedCreateWithoutApotekInput = {
   id?: string
+  penjualanId?: string | null
   total: number
   sisa: number
+  keterangan?: string
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   cicilan?: Prisma.CicilanUncheckedCreateNestedManyWithoutPiutangInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPiutangInput
+}
+
+export type PiutangCreateOrConnectWithoutApotekInput = {
+  where: Prisma.PiutangWhereUniqueInput
+  create: Prisma.XOR<Prisma.PiutangCreateWithoutApotekInput, Prisma.PiutangUncheckedCreateWithoutApotekInput>
+}
+
+export type PiutangCreateManyApotekInputEnvelope = {
+  data: Prisma.PiutangCreateManyApotekInput | Prisma.PiutangCreateManyApotekInput[]
+  skipDuplicates?: boolean
+}
+
+export type PiutangUpsertWithWhereUniqueWithoutApotekInput = {
+  where: Prisma.PiutangWhereUniqueInput
+  update: Prisma.XOR<Prisma.PiutangUpdateWithoutApotekInput, Prisma.PiutangUncheckedUpdateWithoutApotekInput>
+  create: Prisma.XOR<Prisma.PiutangCreateWithoutApotekInput, Prisma.PiutangUncheckedCreateWithoutApotekInput>
+}
+
+export type PiutangUpdateWithWhereUniqueWithoutApotekInput = {
+  where: Prisma.PiutangWhereUniqueInput
+  data: Prisma.XOR<Prisma.PiutangUpdateWithoutApotekInput, Prisma.PiutangUncheckedUpdateWithoutApotekInput>
+}
+
+export type PiutangUpdateManyWithWhereWithoutApotekInput = {
+  where: Prisma.PiutangScalarWhereInput
+  data: Prisma.XOR<Prisma.PiutangUpdateManyMutationInput, Prisma.PiutangUncheckedUpdateManyWithoutApotekInput>
+}
+
+export type PiutangScalarWhereInput = {
+  AND?: Prisma.PiutangScalarWhereInput | Prisma.PiutangScalarWhereInput[]
+  OR?: Prisma.PiutangScalarWhereInput[]
+  NOT?: Prisma.PiutangScalarWhereInput | Prisma.PiutangScalarWhereInput[]
+  id?: Prisma.StringFilter<"Piutang"> | string
+  penjualanId?: Prisma.StringNullableFilter<"Piutang"> | string | null
+  apotekId?: Prisma.StringNullableFilter<"Piutang"> | string | null
+  total?: Prisma.FloatFilter<"Piutang"> | number
+  sisa?: Prisma.FloatFilter<"Piutang"> | number
+  keterangan?: Prisma.StringFilter<"Piutang"> | string
+  status?: Prisma.StringFilter<"Piutang"> | string
+  createdAt?: Prisma.DateTimeFilter<"Piutang"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Piutang"> | Date | string
+}
+
+export type PiutangCreateWithoutPenjualanInput = {
+  id?: string
+  total: number
+  sisa: number
+  keterangan?: string
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  apotek?: Prisma.ApotekCreateNestedOneWithoutPiutangInput
+  cicilan?: Prisma.CicilanCreateNestedManyWithoutPiutangInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPiutangInput
+}
+
+export type PiutangUncheckedCreateWithoutPenjualanInput = {
+  id?: string
+  apotekId?: string | null
+  total: number
+  sisa: number
+  keterangan?: string
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  cicilan?: Prisma.CicilanUncheckedCreateNestedManyWithoutPiutangInput
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPiutangInput
 }
 
 export type PiutangCreateOrConnectWithoutPenjualanInput = {
@@ -504,40 +698,52 @@ export type PiutangUpdateWithoutPenjualanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apotek?: Prisma.ApotekUpdateOneWithoutPiutangNestedInput
   cicilan?: Prisma.CicilanUpdateManyWithoutPiutangNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPiutangNestedInput
 }
 
 export type PiutangUncheckedUpdateWithoutPenjualanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  apotekId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cicilan?: Prisma.CicilanUncheckedUpdateManyWithoutPiutangNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPiutangNestedInput
 }
 
 export type PiutangCreateWithoutCicilanInput = {
   id?: string
   total: number
   sisa: number
+  keterangan?: string
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  penjualan: Prisma.PenjualanCreateNestedOneWithoutPiutangInput
+  penjualan?: Prisma.PenjualanCreateNestedOneWithoutPiutangInput
+  apotek?: Prisma.ApotekCreateNestedOneWithoutPiutangInput
+  setoran?: Prisma.SetoranCreateNestedManyWithoutPiutangInput
 }
 
 export type PiutangUncheckedCreateWithoutCicilanInput = {
   id?: string
-  penjualanId: string
+  penjualanId?: string | null
+  apotekId?: string | null
   total: number
   sisa: number
+  keterangan?: string
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  setoran?: Prisma.SetoranUncheckedCreateNestedManyWithoutPiutangInput
 }
 
 export type PiutangCreateOrConnectWithoutCicilanInput = {
@@ -560,17 +766,139 @@ export type PiutangUpdateWithoutCicilanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  penjualan?: Prisma.PenjualanUpdateOneRequiredWithoutPiutangNestedInput
+  penjualan?: Prisma.PenjualanUpdateOneWithoutPiutangNestedInput
+  apotek?: Prisma.ApotekUpdateOneWithoutPiutangNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPiutangNestedInput
 }
 
 export type PiutangUncheckedUpdateWithoutCicilanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  penjualanId?: Prisma.StringFieldUpdateOperationsInput | string
+  penjualanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  apotekId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total?: Prisma.FloatFieldUpdateOperationsInput | number
   sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPiutangNestedInput
+}
+
+export type PiutangCreateWithoutSetoranInput = {
+  id?: string
+  total: number
+  sisa: number
+  keterangan?: string
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  penjualan?: Prisma.PenjualanCreateNestedOneWithoutPiutangInput
+  apotek?: Prisma.ApotekCreateNestedOneWithoutPiutangInput
+  cicilan?: Prisma.CicilanCreateNestedManyWithoutPiutangInput
+}
+
+export type PiutangUncheckedCreateWithoutSetoranInput = {
+  id?: string
+  penjualanId?: string | null
+  apotekId?: string | null
+  total: number
+  sisa: number
+  keterangan?: string
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  cicilan?: Prisma.CicilanUncheckedCreateNestedManyWithoutPiutangInput
+}
+
+export type PiutangCreateOrConnectWithoutSetoranInput = {
+  where: Prisma.PiutangWhereUniqueInput
+  create: Prisma.XOR<Prisma.PiutangCreateWithoutSetoranInput, Prisma.PiutangUncheckedCreateWithoutSetoranInput>
+}
+
+export type PiutangUpsertWithoutSetoranInput = {
+  update: Prisma.XOR<Prisma.PiutangUpdateWithoutSetoranInput, Prisma.PiutangUncheckedUpdateWithoutSetoranInput>
+  create: Prisma.XOR<Prisma.PiutangCreateWithoutSetoranInput, Prisma.PiutangUncheckedCreateWithoutSetoranInput>
+  where?: Prisma.PiutangWhereInput
+}
+
+export type PiutangUpdateToOneWithWhereWithoutSetoranInput = {
+  where?: Prisma.PiutangWhereInput
+  data: Prisma.XOR<Prisma.PiutangUpdateWithoutSetoranInput, Prisma.PiutangUncheckedUpdateWithoutSetoranInput>
+}
+
+export type PiutangUpdateWithoutSetoranInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
+  sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  penjualan?: Prisma.PenjualanUpdateOneWithoutPiutangNestedInput
+  apotek?: Prisma.ApotekUpdateOneWithoutPiutangNestedInput
+  cicilan?: Prisma.CicilanUpdateManyWithoutPiutangNestedInput
+}
+
+export type PiutangUncheckedUpdateWithoutSetoranInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  penjualanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  apotekId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
+  sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cicilan?: Prisma.CicilanUncheckedUpdateManyWithoutPiutangNestedInput
+}
+
+export type PiutangCreateManyApotekInput = {
+  id?: string
+  penjualanId?: string | null
+  total: number
+  sisa: number
+  keterangan?: string
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PiutangUpdateWithoutApotekInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
+  sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  penjualan?: Prisma.PenjualanUpdateOneWithoutPiutangNestedInput
+  cicilan?: Prisma.CicilanUpdateManyWithoutPiutangNestedInput
+  setoran?: Prisma.SetoranUpdateManyWithoutPiutangNestedInput
+}
+
+export type PiutangUncheckedUpdateWithoutApotekInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  penjualanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
+  sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cicilan?: Prisma.CicilanUncheckedUpdateManyWithoutPiutangNestedInput
+  setoran?: Prisma.SetoranUncheckedUpdateManyWithoutPiutangNestedInput
+}
+
+export type PiutangUncheckedUpdateManyWithoutApotekInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  penjualanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
+  sisa?: Prisma.FloatFieldUpdateOperationsInput | number
+  keterangan?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -583,10 +911,12 @@ export type PiutangUncheckedUpdateWithoutCicilanInput = {
 
 export type PiutangCountOutputType = {
   cicilan: number
+  setoran: number
 }
 
 export type PiutangCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cicilan?: boolean | PiutangCountOutputTypeCountCicilanArgs
+  setoran?: boolean | PiutangCountOutputTypeCountSetoranArgs
 }
 
 /**
@@ -606,76 +936,103 @@ export type PiutangCountOutputTypeCountCicilanArgs<ExtArgs extends runtime.Types
   where?: Prisma.CicilanWhereInput
 }
 
+/**
+ * PiutangCountOutputType without action
+ */
+export type PiutangCountOutputTypeCountSetoranArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SetoranWhereInput
+}
+
 
 export type PiutangSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   penjualanId?: boolean
+  apotekId?: boolean
   total?: boolean
   sisa?: boolean
+  keterangan?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  penjualan?: boolean | Prisma.PenjualanDefaultArgs<ExtArgs>
+  penjualan?: boolean | Prisma.Piutang$penjualanArgs<ExtArgs>
+  apotek?: boolean | Prisma.Piutang$apotekArgs<ExtArgs>
   cicilan?: boolean | Prisma.Piutang$cicilanArgs<ExtArgs>
+  setoran?: boolean | Prisma.Piutang$setoranArgs<ExtArgs>
   _count?: boolean | Prisma.PiutangCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["piutang"]>
 
 export type PiutangSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   penjualanId?: boolean
+  apotekId?: boolean
   total?: boolean
   sisa?: boolean
+  keterangan?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  penjualan?: boolean | Prisma.PenjualanDefaultArgs<ExtArgs>
+  penjualan?: boolean | Prisma.Piutang$penjualanArgs<ExtArgs>
+  apotek?: boolean | Prisma.Piutang$apotekArgs<ExtArgs>
 }, ExtArgs["result"]["piutang"]>
 
 export type PiutangSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   penjualanId?: boolean
+  apotekId?: boolean
   total?: boolean
   sisa?: boolean
+  keterangan?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  penjualan?: boolean | Prisma.PenjualanDefaultArgs<ExtArgs>
+  penjualan?: boolean | Prisma.Piutang$penjualanArgs<ExtArgs>
+  apotek?: boolean | Prisma.Piutang$apotekArgs<ExtArgs>
 }, ExtArgs["result"]["piutang"]>
 
 export type PiutangSelectScalar = {
   id?: boolean
   penjualanId?: boolean
+  apotekId?: boolean
   total?: boolean
   sisa?: boolean
+  keterangan?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PiutangOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "penjualanId" | "total" | "sisa" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["piutang"]>
+export type PiutangOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "penjualanId" | "apotekId" | "total" | "sisa" | "keterangan" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["piutang"]>
 export type PiutangInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  penjualan?: boolean | Prisma.PenjualanDefaultArgs<ExtArgs>
+  penjualan?: boolean | Prisma.Piutang$penjualanArgs<ExtArgs>
+  apotek?: boolean | Prisma.Piutang$apotekArgs<ExtArgs>
   cicilan?: boolean | Prisma.Piutang$cicilanArgs<ExtArgs>
+  setoran?: boolean | Prisma.Piutang$setoranArgs<ExtArgs>
   _count?: boolean | Prisma.PiutangCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PiutangIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  penjualan?: boolean | Prisma.PenjualanDefaultArgs<ExtArgs>
+  penjualan?: boolean | Prisma.Piutang$penjualanArgs<ExtArgs>
+  apotek?: boolean | Prisma.Piutang$apotekArgs<ExtArgs>
 }
 export type PiutangIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  penjualan?: boolean | Prisma.PenjualanDefaultArgs<ExtArgs>
+  penjualan?: boolean | Prisma.Piutang$penjualanArgs<ExtArgs>
+  apotek?: boolean | Prisma.Piutang$apotekArgs<ExtArgs>
 }
 
 export type $PiutangPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Piutang"
   objects: {
-    penjualan: Prisma.$PenjualanPayload<ExtArgs>
+    penjualan: Prisma.$PenjualanPayload<ExtArgs> | null
+    apotek: Prisma.$ApotekPayload<ExtArgs> | null
     cicilan: Prisma.$CicilanPayload<ExtArgs>[]
+    setoran: Prisma.$SetoranPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    penjualanId: string
+    penjualanId: string | null
+    apotekId: string | null
     total: number
     sisa: number
+    keterangan: string
     status: string
     createdAt: Date
     updatedAt: Date
@@ -1073,8 +1430,10 @@ readonly fields: PiutangFieldRefs;
  */
 export interface Prisma__PiutangClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  penjualan<T extends Prisma.PenjualanDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PenjualanDefaultArgs<ExtArgs>>): Prisma.Prisma__PenjualanClient<runtime.Types.Result.GetResult<Prisma.$PenjualanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  penjualan<T extends Prisma.Piutang$penjualanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Piutang$penjualanArgs<ExtArgs>>): Prisma.Prisma__PenjualanClient<runtime.Types.Result.GetResult<Prisma.$PenjualanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  apotek<T extends Prisma.Piutang$apotekArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Piutang$apotekArgs<ExtArgs>>): Prisma.Prisma__ApotekClient<runtime.Types.Result.GetResult<Prisma.$ApotekPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   cicilan<T extends Prisma.Piutang$cicilanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Piutang$cicilanArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CicilanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  setoran<T extends Prisma.Piutang$setoranArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Piutang$setoranArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SetoranPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1106,8 +1465,10 @@ export interface Prisma__PiutangClient<T, Null = never, ExtArgs extends runtime.
 export interface PiutangFieldRefs {
   readonly id: Prisma.FieldRef<"Piutang", 'String'>
   readonly penjualanId: Prisma.FieldRef<"Piutang", 'String'>
+  readonly apotekId: Prisma.FieldRef<"Piutang", 'String'>
   readonly total: Prisma.FieldRef<"Piutang", 'Float'>
   readonly sisa: Prisma.FieldRef<"Piutang", 'Float'>
+  readonly keterangan: Prisma.FieldRef<"Piutang", 'String'>
   readonly status: Prisma.FieldRef<"Piutang", 'String'>
   readonly createdAt: Prisma.FieldRef<"Piutang", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Piutang", 'DateTime'>
@@ -1512,6 +1873,44 @@ export type PiutangDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
+ * Piutang.penjualan
+ */
+export type Piutang$penjualanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Penjualan
+   */
+  select?: Prisma.PenjualanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Penjualan
+   */
+  omit?: Prisma.PenjualanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PenjualanInclude<ExtArgs> | null
+  where?: Prisma.PenjualanWhereInput
+}
+
+/**
+ * Piutang.apotek
+ */
+export type Piutang$apotekArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Apotek
+   */
+  select?: Prisma.ApotekSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Apotek
+   */
+  omit?: Prisma.ApotekOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApotekInclude<ExtArgs> | null
+  where?: Prisma.ApotekWhereInput
+}
+
+/**
  * Piutang.cicilan
  */
 export type Piutang$cicilanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1533,6 +1932,30 @@ export type Piutang$cicilanArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.CicilanScalarFieldEnum | Prisma.CicilanScalarFieldEnum[]
+}
+
+/**
+ * Piutang.setoran
+ */
+export type Piutang$setoranArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Setoran
+   */
+  select?: Prisma.SetoranSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Setoran
+   */
+  omit?: Prisma.SetoranOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SetoranInclude<ExtArgs> | null
+  where?: Prisma.SetoranWhereInput
+  orderBy?: Prisma.SetoranOrderByWithRelationInput | Prisma.SetoranOrderByWithRelationInput[]
+  cursor?: Prisma.SetoranWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SetoranScalarFieldEnum | Prisma.SetoranScalarFieldEnum[]
 }
 
 /**
