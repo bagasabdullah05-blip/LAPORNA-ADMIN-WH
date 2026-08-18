@@ -85,7 +85,7 @@ export default function StokKonsinyasiPage() {
         </div>
       ) : groupedByApotek.length === 0 ? (
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-12 text-center">
-          <div className="text-4xl mb-3">📦</div>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600 mb-3"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5" rx="1"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
           <p className="text-gray-400">Tidak ada data stok konsinyasi</p>
         </div>
       ) : (

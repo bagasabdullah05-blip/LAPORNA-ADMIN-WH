@@ -328,7 +328,7 @@ export default function PenjualanPage() {
         {tipeTransaksi === 'KONSINYASI' && apotekId && (
           <div className="bg-slate-900/50 rounded-xl border border-indigo-500/20 p-4 mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-indigo-400 font-medium text-sm">📦 Stok Konsinyasi di Apotek Terpilih</span>
+              <span className="text-indigo-400 font-medium text-sm">Stok Konsinyasi di Apotek Terpilih</span>
               {loadingStok && <span className="text-xs text-gray-500">Memuat...</span>}
             </div>
             {stokKonsinyasi.length === 0 ? (

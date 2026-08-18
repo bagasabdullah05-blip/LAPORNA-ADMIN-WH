@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DistroFarmasi - Sistem Distribusi Farmasi",
-  description: "Sistem Distribusi Farmasi untuk Manajemen Apotek",
+  title: "Sistem WareHouse CBM",
+  description: "Sistem Manajemen Warehouse CBM",
 };
 
 export default function RootLayout({

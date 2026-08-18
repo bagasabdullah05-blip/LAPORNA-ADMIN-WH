@@ -1,11 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import SearchSelect from '@/components/SearchSelect';
 
 interface Apotek { id: string; nama: string; alamat: string; }
 interface Produk { id: string; nama: string; stokGudang: number; satuan: string; }
 interface Sales { id: string; nama: string; }
+
+interface StokKonsinyasi {
+  produkId: string;
+  jumlah: number;
+}
+
 interface KirimLog {
   id: string;
   jumlah: number;
@@ -38,6 +44,9 @@ export default function KirimKonsinyasiPage() {
   const [tanggal, setTanggal] = useState(() => new Date().toISOString().slice(0, 10));
   const [items, setItems] = useState<ItemRow[]>([{ ...emptyItem }]);
 
+  const [stokKonsinyasi, setStokKonsinyasi] = useState<StokKonsinyasi[]>([]);
+  const [loadingStok, setLoadingStok] = useState(false);
+
   const fetchData = () => {
     setLoading(true);
     Promise.all([
@@ -58,6 +67,22 @@ export default function KirimKonsinyasiPage() {
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchData(); }, []);
+
+  const fetchStokKonsinyasi = useCallback((id: string) => {
+    if (!id) {
+      setStokKonsinyasi([]);
+      return;
+    }
+    setLoadingStok(true);
+    fetch(`/api/konsinyasi/stok?apotekId=${id}`)
+      .then((res) => res.json())
+      .then((d) => { if (d.success) setStokKonsinyasi(d.data); })
+      .catch(() => {})
+      .finally(() => setLoadingStok(false));
+  }, []);
+
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { fetchStokKonsinyasi(apotekId); }, [apotekId, fetchStokKonsinyasi]);
 
   const addItem = () => setItems((prev) => [...prev, { ...emptyItem }]);
   const removeItem = (index: number) => { if (items.length > 1) setItems((prev) => prev.filter((_, i) => i !== index)); };
@@ -156,6 +181,44 @@ export default function KirimKonsinyasiPage() {
             </div>
           </div>
         </div>
+
+        {apotekId && (
+          <div className="bg-slate-900/50 rounded-xl border border-indigo-500/20 p-4 mb-4 md:mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-indigo-400 font-medium text-sm">Stok Konsinyasi di Apotek</span>
+              {loadingStok && <span className="text-xs text-gray-500">Memuat...</span>}
+            </div>
+            {stokKonsinyasi.length === 0 ? (
+              <p className="text-sm text-gray-500">Belum ada stok konsinyasi di apotek ini</p>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                {stokKonsinyasi.map((stok) => {
+                  const produk = produkList.find((p) => p.id === stok.produkId);
+                  if (!produk) return null;
+                  return (
+                    <div
+                      key={stok.produkId}
+                      className={`px-3 py-2 rounded-lg border text-sm ${
+                        stok.jumlah <= 5
+                          ? 'bg-red-500/5 border-red-500/20'
+                          : stok.jumlah <= 15
+                          ? 'bg-yellow-500/5 border-yellow-500/20'
+                          : 'bg-green-500/5 border-green-500/20'
+                      }`}
+                    >
+                      <div className="text-gray-300 font-medium truncate">{produk.nama}</div>
+                      <div className={`font-bold ${
+                        stok.jumlah <= 5 ? 'text-red-400' : stok.jumlah <= 15 ? 'text-yellow-400' : 'text-green-400'
+                      }`}>
+                        {stok.jumlah} {produk.satuan}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Items Section */}
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 md:p-6 mb-4 md:mb-6">

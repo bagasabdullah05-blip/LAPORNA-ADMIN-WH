@@ -231,9 +231,9 @@ export default function LaporanPenjualanPage() {
       {/* Tabs */}
       <div className="flex gap-1 bg-gray-900 rounded-xl border border-gray-800 p-1 mb-6">
         {([
-          { key: 'ringkasan', label: 'Ringkasan', icon: '📊' },
-          { key: 'sales', label: 'Omset per Sales', icon: '👤' },
-          { key: 'harian', label: 'Omset per Hari', icon: '📅' },
+          { key: 'ringkasan', label: 'Ringkasan' },
+          { key: 'sales', label: 'Omset per Sales' },
+          { key: 'harian', label: 'Omset per Hari' },
         ] as const).map((t) => (
           <button
             key={t.key}
@@ -244,7 +244,6 @@ export default function LaporanPenjualanPage() {
                 : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'
             }`}
           >
-            <span>{t.icon}</span>
             <span>{t.label}</span>
           </button>
         ))}

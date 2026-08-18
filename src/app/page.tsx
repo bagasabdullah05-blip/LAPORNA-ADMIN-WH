@@ -40,8 +40,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white">💊 DistroFarmasi</h1>
-          <p className="text-gray-400 mt-2">Sistem Distribusi Farmasi</p>
+          <h1 className="text-3xl font-bold text-white">Sistem WareHouse CBM</h1>
+          <p className="text-gray-400 mt-2">Warehouse Management System</p>
         </div>
 
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-8 shadow-2xl">

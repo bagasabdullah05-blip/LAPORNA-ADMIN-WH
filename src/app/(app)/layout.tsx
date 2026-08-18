@@ -27,7 +27,7 @@ export default function AppLayout({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 className="text-base font-bold text-white">💊 DistroFarmasi</h1>
+          <h1 className="text-base font-bold text-white">Sistem WareHouse CBM</h1>
         </div>
 
         <main className="flex-1 p-4 md:p-6 overflow-auto">{children}</main>

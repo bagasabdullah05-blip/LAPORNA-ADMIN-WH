@@ -2,6 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
+export async function GET() {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "Tidak terautentikasi" },
+        { status: 401 }
+      );
+    }
+
+    const data = await prisma.returLog.findMany({
+      include: { apotek: { select: { nama: true } }, produk: { select: { nama: true } } },
+      orderBy: { tanggal: "desc" },
+    });
+
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    console.error("Get retur error:", error);
+    return NextResponse.json(
+      { success: false, message: "Terjadi kesalahan" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser();
