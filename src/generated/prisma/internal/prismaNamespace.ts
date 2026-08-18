@@ -401,6 +401,7 @@ export const ModelName = {
   Apotek: 'Apotek',
   Produk: 'Produk',
   Sales: 'Sales',
+  SetoranHarian: 'SetoranHarian',
   Pelanggan: 'Pelanggan',
   KonsinyasiLog: 'KonsinyasiLog',
   StokKonsinyasi: 'StokKonsinyasi',
@@ -427,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "apotek" | "produk" | "sales" | "pelanggan" | "konsinyasiLog" | "stokKonsinyasi" | "barangMasukLog" | "returLog" | "opnameLog" | "penjualan" | "detailPenjualan" | "piutang" | "cicilan" | "auditLog"
+    modelProps: "user" | "apotek" | "produk" | "sales" | "setoranHarian" | "pelanggan" | "konsinyasiLog" | "stokKonsinyasi" | "barangMasukLog" | "returLog" | "opnameLog" | "penjualan" | "detailPenjualan" | "piutang" | "cicilan" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -724,6 +725,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SalesCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SalesCountAggregateOutputType> | number
+        }
+      }
+    }
+    SetoranHarian: {
+      payload: Prisma.$SetoranHarianPayload<ExtArgs>
+      fields: Prisma.SetoranHarianFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SetoranHarianFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SetoranHarianFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>
+        }
+        findFirst: {
+          args: Prisma.SetoranHarianFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SetoranHarianFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>
+        }
+        findMany: {
+          args: Prisma.SetoranHarianFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>[]
+        }
+        create: {
+          args: Prisma.SetoranHarianCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>
+        }
+        createMany: {
+          args: Prisma.SetoranHarianCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SetoranHarianCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>[]
+        }
+        delete: {
+          args: Prisma.SetoranHarianDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>
+        }
+        update: {
+          args: Prisma.SetoranHarianUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>
+        }
+        deleteMany: {
+          args: Prisma.SetoranHarianDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SetoranHarianUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SetoranHarianUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>[]
+        }
+        upsert: {
+          args: Prisma.SetoranHarianUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetoranHarianPayload>
+        }
+        aggregate: {
+          args: Prisma.SetoranHarianAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSetoranHarian>
+        }
+        groupBy: {
+          args: Prisma.SetoranHarianGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SetoranHarianGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SetoranHarianCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SetoranHarianCountAggregateOutputType> | number
         }
       }
     }
@@ -1639,6 +1714,18 @@ export const SalesScalarFieldEnum = {
 export type SalesScalarFieldEnum = (typeof SalesScalarFieldEnum)[keyof typeof SalesScalarFieldEnum]
 
 
+export const SetoranHarianScalarFieldEnum = {
+  id: 'id',
+  salesId: 'salesId',
+  tanggal: 'tanggal',
+  jumlahSetor: 'jumlahSetor',
+  keterangan: 'keterangan',
+  createdAt: 'createdAt'
+} as const
+
+export type SetoranHarianScalarFieldEnum = (typeof SetoranHarianScalarFieldEnum)[keyof typeof SetoranHarianScalarFieldEnum]
+
+
 export const PelangganScalarFieldEnum = {
   id: 'id',
   nama: 'nama',
@@ -2027,6 +2114,7 @@ export type GlobalOmitConfig = {
   apotek?: Prisma.ApotekOmit
   produk?: Prisma.ProdukOmit
   sales?: Prisma.SalesOmit
+  setoranHarian?: Prisma.SetoranHarianOmit
   pelanggan?: Prisma.PelangganOmit
   konsinyasiLog?: Prisma.KonsinyasiLogOmit
   stokKonsinyasi?: Prisma.StokKonsinyasiOmit

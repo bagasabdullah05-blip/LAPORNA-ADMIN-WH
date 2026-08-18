@@ -184,6 +184,7 @@ export type SalesWhereInput = {
   aktif?: Prisma.BoolFilter<"Sales"> | boolean
   penjualan?: Prisma.PenjualanListRelationFilter
   konsinyasiLogs?: Prisma.KonsinyasiLogListRelationFilter
+  setoranHarian?: Prisma.SetoranHarianListRelationFilter
 }
 
 export type SalesOrderByWithRelationInput = {
@@ -194,6 +195,7 @@ export type SalesOrderByWithRelationInput = {
   aktif?: Prisma.SortOrder
   penjualan?: Prisma.PenjualanOrderByRelationAggregateInput
   konsinyasiLogs?: Prisma.KonsinyasiLogOrderByRelationAggregateInput
+  setoranHarian?: Prisma.SetoranHarianOrderByRelationAggregateInput
 }
 
 export type SalesWhereUniqueInput = Prisma.AtLeast<{
@@ -207,6 +209,7 @@ export type SalesWhereUniqueInput = Prisma.AtLeast<{
   aktif?: Prisma.BoolFilter<"Sales"> | boolean
   penjualan?: Prisma.PenjualanListRelationFilter
   konsinyasiLogs?: Prisma.KonsinyasiLogListRelationFilter
+  setoranHarian?: Prisma.SetoranHarianListRelationFilter
 }, "id">
 
 export type SalesOrderByWithAggregationInput = {
@@ -239,6 +242,7 @@ export type SalesCreateInput = {
   aktif?: boolean
   penjualan?: Prisma.PenjualanCreateNestedManyWithoutSalesInput
   konsinyasiLogs?: Prisma.KonsinyasiLogCreateNestedManyWithoutSalesInput
+  setoranHarian?: Prisma.SetoranHarianCreateNestedManyWithoutSalesInput
 }
 
 export type SalesUncheckedCreateInput = {
@@ -249,6 +253,7 @@ export type SalesUncheckedCreateInput = {
   aktif?: boolean
   penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutSalesInput
   konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedCreateNestedManyWithoutSalesInput
+  setoranHarian?: Prisma.SetoranHarianUncheckedCreateNestedManyWithoutSalesInput
 }
 
 export type SalesUpdateInput = {
@@ -259,6 +264,7 @@ export type SalesUpdateInput = {
   aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   penjualan?: Prisma.PenjualanUpdateManyWithoutSalesNestedInput
   konsinyasiLogs?: Prisma.KonsinyasiLogUpdateManyWithoutSalesNestedInput
+  setoranHarian?: Prisma.SetoranHarianUpdateManyWithoutSalesNestedInput
 }
 
 export type SalesUncheckedUpdateInput = {
@@ -269,6 +275,7 @@ export type SalesUncheckedUpdateInput = {
   aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutSalesNestedInput
   konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedUpdateManyWithoutSalesNestedInput
+  setoranHarian?: Prisma.SetoranHarianUncheckedUpdateManyWithoutSalesNestedInput
 }
 
 export type SalesCreateManyInput = {
@@ -324,6 +331,20 @@ export type SalesScalarRelationFilter = {
   isNot?: Prisma.SalesWhereInput
 }
 
+export type SalesCreateNestedOneWithoutSetoranHarianInput = {
+  create?: Prisma.XOR<Prisma.SalesCreateWithoutSetoranHarianInput, Prisma.SalesUncheckedCreateWithoutSetoranHarianInput>
+  connectOrCreate?: Prisma.SalesCreateOrConnectWithoutSetoranHarianInput
+  connect?: Prisma.SalesWhereUniqueInput
+}
+
+export type SalesUpdateOneRequiredWithoutSetoranHarianNestedInput = {
+  create?: Prisma.XOR<Prisma.SalesCreateWithoutSetoranHarianInput, Prisma.SalesUncheckedCreateWithoutSetoranHarianInput>
+  connectOrCreate?: Prisma.SalesCreateOrConnectWithoutSetoranHarianInput
+  upsert?: Prisma.SalesUpsertWithoutSetoranHarianInput
+  connect?: Prisma.SalesWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SalesUpdateToOneWithWhereWithoutSetoranHarianInput, Prisma.SalesUpdateWithoutSetoranHarianInput>, Prisma.SalesUncheckedUpdateWithoutSetoranHarianInput>
+}
+
 export type SalesCreateNestedOneWithoutKonsinyasiLogsInput = {
   create?: Prisma.XOR<Prisma.SalesCreateWithoutKonsinyasiLogsInput, Prisma.SalesUncheckedCreateWithoutKonsinyasiLogsInput>
   connectOrCreate?: Prisma.SalesCreateOrConnectWithoutKonsinyasiLogsInput
@@ -352,6 +373,62 @@ export type SalesUpdateOneRequiredWithoutPenjualanNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SalesUpdateToOneWithWhereWithoutPenjualanInput, Prisma.SalesUpdateWithoutPenjualanInput>, Prisma.SalesUncheckedUpdateWithoutPenjualanInput>
 }
 
+export type SalesCreateWithoutSetoranHarianInput = {
+  id?: string
+  nama: string
+  noTelp: string
+  alamat: string
+  aktif?: boolean
+  penjualan?: Prisma.PenjualanCreateNestedManyWithoutSalesInput
+  konsinyasiLogs?: Prisma.KonsinyasiLogCreateNestedManyWithoutSalesInput
+}
+
+export type SalesUncheckedCreateWithoutSetoranHarianInput = {
+  id?: string
+  nama: string
+  noTelp: string
+  alamat: string
+  aktif?: boolean
+  penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutSalesInput
+  konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedCreateNestedManyWithoutSalesInput
+}
+
+export type SalesCreateOrConnectWithoutSetoranHarianInput = {
+  where: Prisma.SalesWhereUniqueInput
+  create: Prisma.XOR<Prisma.SalesCreateWithoutSetoranHarianInput, Prisma.SalesUncheckedCreateWithoutSetoranHarianInput>
+}
+
+export type SalesUpsertWithoutSetoranHarianInput = {
+  update: Prisma.XOR<Prisma.SalesUpdateWithoutSetoranHarianInput, Prisma.SalesUncheckedUpdateWithoutSetoranHarianInput>
+  create: Prisma.XOR<Prisma.SalesCreateWithoutSetoranHarianInput, Prisma.SalesUncheckedCreateWithoutSetoranHarianInput>
+  where?: Prisma.SalesWhereInput
+}
+
+export type SalesUpdateToOneWithWhereWithoutSetoranHarianInput = {
+  where?: Prisma.SalesWhereInput
+  data: Prisma.XOR<Prisma.SalesUpdateWithoutSetoranHarianInput, Prisma.SalesUncheckedUpdateWithoutSetoranHarianInput>
+}
+
+export type SalesUpdateWithoutSetoranHarianInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noTelp?: Prisma.StringFieldUpdateOperationsInput | string
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  penjualan?: Prisma.PenjualanUpdateManyWithoutSalesNestedInput
+  konsinyasiLogs?: Prisma.KonsinyasiLogUpdateManyWithoutSalesNestedInput
+}
+
+export type SalesUncheckedUpdateWithoutSetoranHarianInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noTelp?: Prisma.StringFieldUpdateOperationsInput | string
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutSalesNestedInput
+  konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedUpdateManyWithoutSalesNestedInput
+}
+
 export type SalesCreateWithoutKonsinyasiLogsInput = {
   id?: string
   nama: string
@@ -359,6 +436,7 @@ export type SalesCreateWithoutKonsinyasiLogsInput = {
   alamat: string
   aktif?: boolean
   penjualan?: Prisma.PenjualanCreateNestedManyWithoutSalesInput
+  setoranHarian?: Prisma.SetoranHarianCreateNestedManyWithoutSalesInput
 }
 
 export type SalesUncheckedCreateWithoutKonsinyasiLogsInput = {
@@ -368,6 +446,7 @@ export type SalesUncheckedCreateWithoutKonsinyasiLogsInput = {
   alamat: string
   aktif?: boolean
   penjualan?: Prisma.PenjualanUncheckedCreateNestedManyWithoutSalesInput
+  setoranHarian?: Prisma.SetoranHarianUncheckedCreateNestedManyWithoutSalesInput
 }
 
 export type SalesCreateOrConnectWithoutKonsinyasiLogsInput = {
@@ -393,6 +472,7 @@ export type SalesUpdateWithoutKonsinyasiLogsInput = {
   alamat?: Prisma.StringFieldUpdateOperationsInput | string
   aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   penjualan?: Prisma.PenjualanUpdateManyWithoutSalesNestedInput
+  setoranHarian?: Prisma.SetoranHarianUpdateManyWithoutSalesNestedInput
 }
 
 export type SalesUncheckedUpdateWithoutKonsinyasiLogsInput = {
@@ -402,6 +482,7 @@ export type SalesUncheckedUpdateWithoutKonsinyasiLogsInput = {
   alamat?: Prisma.StringFieldUpdateOperationsInput | string
   aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   penjualan?: Prisma.PenjualanUncheckedUpdateManyWithoutSalesNestedInput
+  setoranHarian?: Prisma.SetoranHarianUncheckedUpdateManyWithoutSalesNestedInput
 }
 
 export type SalesCreateWithoutPenjualanInput = {
@@ -411,6 +492,7 @@ export type SalesCreateWithoutPenjualanInput = {
   alamat: string
   aktif?: boolean
   konsinyasiLogs?: Prisma.KonsinyasiLogCreateNestedManyWithoutSalesInput
+  setoranHarian?: Prisma.SetoranHarianCreateNestedManyWithoutSalesInput
 }
 
 export type SalesUncheckedCreateWithoutPenjualanInput = {
@@ -420,6 +502,7 @@ export type SalesUncheckedCreateWithoutPenjualanInput = {
   alamat: string
   aktif?: boolean
   konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedCreateNestedManyWithoutSalesInput
+  setoranHarian?: Prisma.SetoranHarianUncheckedCreateNestedManyWithoutSalesInput
 }
 
 export type SalesCreateOrConnectWithoutPenjualanInput = {
@@ -445,6 +528,7 @@ export type SalesUpdateWithoutPenjualanInput = {
   alamat?: Prisma.StringFieldUpdateOperationsInput | string
   aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   konsinyasiLogs?: Prisma.KonsinyasiLogUpdateManyWithoutSalesNestedInput
+  setoranHarian?: Prisma.SetoranHarianUpdateManyWithoutSalesNestedInput
 }
 
 export type SalesUncheckedUpdateWithoutPenjualanInput = {
@@ -454,6 +538,7 @@ export type SalesUncheckedUpdateWithoutPenjualanInput = {
   alamat?: Prisma.StringFieldUpdateOperationsInput | string
   aktif?: Prisma.BoolFieldUpdateOperationsInput | boolean
   konsinyasiLogs?: Prisma.KonsinyasiLogUncheckedUpdateManyWithoutSalesNestedInput
+  setoranHarian?: Prisma.SetoranHarianUncheckedUpdateManyWithoutSalesNestedInput
 }
 
 
@@ -464,11 +549,13 @@ export type SalesUncheckedUpdateWithoutPenjualanInput = {
 export type SalesCountOutputType = {
   penjualan: number
   konsinyasiLogs: number
+  setoranHarian: number
 }
 
 export type SalesCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   penjualan?: boolean | SalesCountOutputTypeCountPenjualanArgs
   konsinyasiLogs?: boolean | SalesCountOutputTypeCountKonsinyasiLogsArgs
+  setoranHarian?: boolean | SalesCountOutputTypeCountSetoranHarianArgs
 }
 
 /**
@@ -495,6 +582,13 @@ export type SalesCountOutputTypeCountKonsinyasiLogsArgs<ExtArgs extends runtime.
   where?: Prisma.KonsinyasiLogWhereInput
 }
 
+/**
+ * SalesCountOutputType without action
+ */
+export type SalesCountOutputTypeCountSetoranHarianArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SetoranHarianWhereInput
+}
+
 
 export type SalesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -504,6 +598,7 @@ export type SalesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   aktif?: boolean
   penjualan?: boolean | Prisma.Sales$penjualanArgs<ExtArgs>
   konsinyasiLogs?: boolean | Prisma.Sales$konsinyasiLogsArgs<ExtArgs>
+  setoranHarian?: boolean | Prisma.Sales$setoranHarianArgs<ExtArgs>
   _count?: boolean | Prisma.SalesCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sales"]>
 
@@ -535,6 +630,7 @@ export type SalesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type SalesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   penjualan?: boolean | Prisma.Sales$penjualanArgs<ExtArgs>
   konsinyasiLogs?: boolean | Prisma.Sales$konsinyasiLogsArgs<ExtArgs>
+  setoranHarian?: boolean | Prisma.Sales$setoranHarianArgs<ExtArgs>
   _count?: boolean | Prisma.SalesCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SalesIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -545,6 +641,7 @@ export type $SalesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     penjualan: Prisma.$PenjualanPayload<ExtArgs>[]
     konsinyasiLogs: Prisma.$KonsinyasiLogPayload<ExtArgs>[]
+    setoranHarian: Prisma.$SetoranHarianPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -948,6 +1045,7 @@ export interface Prisma__SalesClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   penjualan<T extends Prisma.Sales$penjualanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Sales$penjualanArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PenjualanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   konsinyasiLogs<T extends Prisma.Sales$konsinyasiLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Sales$konsinyasiLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KonsinyasiLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  setoranHarian<T extends Prisma.Sales$setoranHarianArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Sales$setoranHarianArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SetoranHarianPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1420,6 +1518,30 @@ export type Sales$konsinyasiLogsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.KonsinyasiLogScalarFieldEnum | Prisma.KonsinyasiLogScalarFieldEnum[]
+}
+
+/**
+ * Sales.setoranHarian
+ */
+export type Sales$setoranHarianArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SetoranHarian
+   */
+  select?: Prisma.SetoranHarianSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SetoranHarian
+   */
+  omit?: Prisma.SetoranHarianOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SetoranHarianInclude<ExtArgs> | null
+  where?: Prisma.SetoranHarianWhereInput
+  orderBy?: Prisma.SetoranHarianOrderByWithRelationInput | Prisma.SetoranHarianOrderByWithRelationInput[]
+  cursor?: Prisma.SetoranHarianWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SetoranHarianScalarFieldEnum | Prisma.SetoranHarianScalarFieldEnum[]
 }
 
 /**

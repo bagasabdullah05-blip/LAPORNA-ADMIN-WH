@@ -38,6 +38,11 @@ export type Produk = Prisma.ProdukModel
  */
 export type Sales = Prisma.SalesModel
 /**
+ * Model SetoranHarian
+ * 
+ */
+export type SetoranHarian = Prisma.SetoranHarianModel
+/**
  * Model Pelanggan
  * 
  */

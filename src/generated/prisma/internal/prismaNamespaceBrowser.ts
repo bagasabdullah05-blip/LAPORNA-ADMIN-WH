@@ -55,6 +55,7 @@ export const ModelName = {
   Apotek: 'Apotek',
   Produk: 'Produk',
   Sales: 'Sales',
+  SetoranHarian: 'SetoranHarian',
   Pelanggan: 'Pelanggan',
   KonsinyasiLog: 'KonsinyasiLog',
   StokKonsinyasi: 'StokKonsinyasi',
@@ -141,6 +142,18 @@ export const SalesScalarFieldEnum = {
 } as const
 
 export type SalesScalarFieldEnum = (typeof SalesScalarFieldEnum)[keyof typeof SalesScalarFieldEnum]
+
+
+export const SetoranHarianScalarFieldEnum = {
+  id: 'id',
+  salesId: 'salesId',
+  tanggal: 'tanggal',
+  jumlahSetor: 'jumlahSetor',
+  keterangan: 'keterangan',
+  createdAt: 'createdAt'
+} as const
+
+export type SetoranHarianScalarFieldEnum = (typeof SetoranHarianScalarFieldEnum)[keyof typeof SetoranHarianScalarFieldEnum]
 
 
 export const PelangganScalarFieldEnum = {
