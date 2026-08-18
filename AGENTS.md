@@ -1,7 +1,7 @@
-# DistroFarmasi - Agent Context
+# Sistem WareHouse CBM - Agent Context
 
 ## Project Overview
-Pharmacy distribution system (DistroFarmasi) with sales, piutang, cicilan, consignment stock, warehouse, stock opname, laporan (reports), and setoran harian.
+Sistem manajemen gudang (warehouse) dengan penjualan (konsinyasi & langsung), piutang, cicilan, setoran harian, stok konsinyasi, warehouse, stock opname, retur, dan laporan lengkap.
 
 ## Tech Stack
 - **Framework**: Next.js 16.3.1 (App Router) + TypeScript
@@ -19,6 +19,35 @@ Pharmacy distribution system (DistroFarmasi) with sales, piutang, cicilan, consi
 - **Login**: `admin@apotek.com` / `admin123` (ADMIN), `agen@apotek.com` / `agen123` (STAFF)
 - **Import data**: `import-data/POS_Data.xlsx` — 13 sheets: Produk 44, Apotek 1225, Sales 4, Pelanggan 9, KonsinyasiLog 4704, StokKonsinyasi 4223, PenjualanKonsinyasi 1863, PenjualanLangsung 32, BarangMasukLog 40, Piutang 1
 
+## Alur Setoran (CRITICAL)
+Semua setoran **OTOMATIS** — tidak ada input manual.
+
+### Penjualan → Setoran
+| Metode Bayar | Jumlah Bayar | Hasil |
+|---|---|---|
+| TUNAI | ≥ totalBayar | Setoran CASH (lunas) |
+| TUNAI | < totalBayar | Setoran CICILAN/PELUNASAN + Piutang sisa |
+| TUNAI | 0 | Piutang penuh, tidak ada setoran |
+| TRANSFER | ≥ totalBayar | Setoran CASH (lunas) |
+| TRANSFER | < totalBayar | Setoran CICILAN/PELUNASAN + Piutang sisa |
+| TRANSFER | 0 | Piutang penuh, tidak ada setoran |
+
+### Cicilan → Setoran
+Bayar cicilan di `/piutang` → otomatis buat setoran:
+- Konsinyasi + sisa > 0: `KONSINYASI_CICIL`
+- Konsinyasi + sisa = 0: `KONSINYASI_LUNAS`
+- Langsung + sisa > 0: `CICILAN`
+- Langsung + sisa = 0: `PELUNASAN`
+
+### Status Setoran
+- `MENUNGGU` — baru dibuat, belum di-ACC
+- `DISETUJUI` — sudah di-ACC oleh admin finance di `/setoran/approval`
+
+### Nilai Setoran Tipe
+`CASH`, `CICILAN`, `PELUNASAN`, `KONSINYASI_CICIL`, `KONSINYASI_LUNAS`
+
+**PENTING**: Metode bayar hanya `TUNAI` atau `TRANSFER`. `PIUTANG` bukan metode bayar — piutang adalah KONSEKUENSI dari pembayaran sebagian/tidak bayar.
+
 ## PostgreSQL Quoting Rules (CRITICAL)
 Prisma creates PascalCase tables (`"Produk"`, `"Penjualan"`, etc.) and camelCase columns (`"totalBayar"`, `"salesId"`, etc.) — **all raw SQL must use double-quoted identifiers**.
 
@@ -28,6 +57,7 @@ Prisma creates PascalCase tables (`"Produk"`, `"Penjualan"`, etc.) and camelCase
 3. **Pareto sort**: Kumulatif calculated on revenue-desc order always; sort only reorders display
 4. **Invalid Date fix**: `tanggal::date` PostgreSQL converted via `toISOString().split('T')[0]`
 5. **Dashboard API**: Quoted table name `"Produk"` in raw SQL
+6. **Piutang API**: `GET /api/piutang` must include `cicilan: true` in include clause; page null-safety for `selectedPiutang.cicilan.length`
 
 ## Color Theme
 Primary colors defined in `globals.css` `@theme` block:
@@ -48,39 +78,64 @@ Primary colors defined in `globals.css` `@theme` block:
 ## Data Status
 All data imported to Neon: Users 2, Produk 44, Apotek 1225, Sales 4, Pelanggan 9, Penjualan 502 (482 konsinyasi + 20 langsung), DetailPenjualan 1895, KonsinyasiLog 4704, StokKonsinyasi 4223, BarangMasukLog 40, Piutang 1
 
-53 penjualan + 257 konsinyasiLog + 1 piutang dates corrected to real 2026-08-xx dates.
-
 ## Deploy Notes
 - **User directive**: Do NOT auto-push to Netlify — test locally first
 - Netlify CLI deploy on Windows fails with EPERM symlink error (`@netlify/plugin-nextjs` v5.15.13 tries to symlink `node_modules/@prisma/client`). GitHub push triggers Netlify auto-deploy if site is connected to repo
 - **Middleware deprecation**: Next.js 16.3.1 shows warning `middleware → proxy` migration needed (non-blocking)
 
-## Setoran Harian (INCOMPLETE)
-- Model added to `prisma/schema.prisma` but `prisma db push` not yet run — needs user consent
-- API route, page, and sidebar entry not yet created
-- Next step: ask user for consent to run `npx prisma db push --accept-data-loss`, then create API + page
-
 ## Key Files
-- `prisma/schema.prisma` — DB schema (14 models + SetoranHarian added but not migrated)
+
+### Schema & Config
+- `prisma/schema.prisma` — DB schema (15 models: User, Produk, Apotek, Sales, Pelanggan, Penjualan, DetailPenjualan, StokKonsinyasi, KonsinyasiLog, BarangMasukLog, Piutang, Cicilan, Retur, ReturDetail, Opname, **Setoran**)
 - `prisma/prisma.config.ts` — Prisma config with Neon adapter
 - `src/lib/prisma.ts` — lazy Proxy singleton with Neon adapter
-- `src/lib/ThemeContext.tsx` — dark/light mode context
 - `src/lib/auth.ts` — JWT auth helpers
+- `src/lib/ThemeContext.tsx` — dark/light mode context
 - `src/lib/export.ts` — CSV export utility
-- `src/components/Sidebar.tsx` — sidebar with theme toggle
-- `src/components/SearchSelect.tsx` — reusable search-select dropdown
-- `src/app/globals.css` — Tailwind v4 theme, color palette, dark/light mode CSS overrides
-- `src/app/api/dashboard/route.ts` — dashboard stats API
+
+### API Routes (Write)
+- `src/app/api/penjualan/route.ts` — POST (bayar logic: TUNAI/TRANSFER → setoran + piutang), PUT (edit + stock reversal)
+- `src/app/api/piutang/route.ts` — GET (includes cicilan relation), POST (piutang lama)
+- `src/app/api/cicilan/route.ts` — POST (auto-create setoran saat cicilan dibayar)
+- `src/app/api/setoran/route.ts` — GET, POST, PUT (ACC), DELETE
+- `src/app/api/setoran/penjualan-list/route.ts` — penjualan list with setoran status
+
+### API Routes (Read/Reports)
+- `src/app/api/dashboard/route.ts` — dashboard stats
 - `src/app/api/laporan/penjualan/route.ts` — laporan penjualan (fixed double-count)
+- `src/app/api/laporan/penjualan-produk/route.ts` — penjualan per produk
+- `src/app/api/laporan/penerimaan-kas/route.ts` — penerimaan kas (reads approved setoran)
+- `src/app/api/laporan/setoran/route.ts` — laporan setoran
 - `src/app/api/laporan/margin/route.ts` — laporan margin
 - `src/app/api/laporan/perputaran/route.ts` — laporan perputaran
-- `src/app/api/laporan/pareto/route.ts` — pareto produk (with periode filter)
-- `src/app/api/laporan/pareto/pelanggan/route.ts` — pareto pelanggan (with periode filter)
+- `src/app/api/laporan/pareto/route.ts` — pareto produk
+- `src/app/api/laporan/pareto/pelanggan/route.ts` — pareto pelanggan
 - `src/app/api/laporan/piutang/route.ts` — laporan piutang
-- `netlify.toml` — build config
-- `prisma/import.ts` — batch import script
-- `prisma/fix-dates.ts` — Excel serial date fix
-- `import-data/POS_Data.xlsx` — source data
+
+### API Routes (CRUD with DELETE + stock reversal)
+- `src/app/api/produk/route.ts`, `src/app/api/produk/[id]/route.ts`
+- `src/app/api/apotek/route.ts`, `src/app/api/apotek/[id]/route.ts`
+- `src/app/api/sales/route.ts`, `src/app/api/sales/[id]/route.ts`
+- `src/app/api/pelanggan/route.ts`, `src/app/api/pelanggan/[id]/route.ts`
+- `src/app/api/retur/route.ts`, `src/app/api/opname/route.ts`
+- `src/app/api/gudang/stok/route.ts`, `src/app/api/gudang/barang-masuk/route.ts`
+- `src/app/api/konsinyasi/kirim/route.ts`, `src/app/api/konsinyasi/stok/route.ts`
+
+### Pages
+- `src/app/page.tsx` — login
+- `src/app/(app)/dashboard/page.tsx`
+- `src/app/(app)/master/produk/page.tsx`, `sales/page.tsx`, `apotek/page.tsx`, `pelanggan/page.tsx`
+- `src/app/(app)/gudang/stok/page.tsx`, `barang-masuk/page.tsx`
+- `src/app/(app)/konsinyasi/kirim/page.tsx`, `stok/page.tsx`
+- `src/app/(app)/retur/page.tsx`, `opname/page.tsx`
+- `src/app/(app)/penjualan/page.tsx` — form TUNAI/TRANSFER, jumlahBayar, summary
+- `src/app/(app)/piutang/page.tsx` — piutang list + cicilan modal (auto-create setoran)
+- `src/app/(app)/setoran/page.tsx` — daftar setoran (read-only, semua auto)
+- `src/app/(app)/setoran/approval/page.tsx` — admin finance ACC setoran
+- `src/app/(app)/laporan/penjualan/page.tsx`, `penjualan-produk/page.tsx`, `penerimaan-kas/page.tsx`, `setoran/page.tsx`, `margin/page.tsx`, `perputaran/page.tsx`, `pareto/page.tsx`, `pareto/pelanggan/page.tsx`
+
+### Components
+- `src/components/Sidebar.tsx` — sidebar with SVG icons, menu: Dashboard, Master Data, Gudang, Konsinyasi, Retur, Opname, Penjualan, Piutang & Cicilan, Approval Setoran, Laporan
 
 <!-- BEGIN:nextjs-agent-rules -->
 
