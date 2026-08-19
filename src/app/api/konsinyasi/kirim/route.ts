@@ -65,44 +65,40 @@ export async function POST(request: NextRequest) {
 
     const produkIds = items.map((item: { produkId: string }) => item.produkId);
 
-    const result = await prisma.$transaction(async (tx) => {
-      const existingProduks = await tx.produk.findMany({
-        where: { id: { in: produkIds } },
-        select: { id: true, nama: true, stokGudang: true },
-      });
-      const produkMap = new Map(existingProduks.map((p) => [p.id, p]));
-
-      for (const item of items) {
-        const produk = produkMap.get(item.produkId);
-        if (!produk) {
-          throw new Error(`Produk ${item.produkId} tidak ditemukan`);
-        }
-        if (produk.stokGudang < item.jumlah) {
-          throw new Error(`Stok gudang ${produk.nama} tidak mencukupi (tersedia: ${produk.stokGudang}, diminta: ${item.jumlah})`);
-        }
-      }
-
-      const logs = [];
-      for (const item of items) {
-        const log = await tx.konsinyasiLog.create({
-          data: { apotekId, produkId: item.produkId, salesId, jumlah: item.jumlah, keterangan: keterangan || "", tanggal: tanggal ? new Date(tanggal) : new Date() },
-        });
-        logs.push(log);
-
-        await tx.produk.update({
-          where: { id: item.produkId },
-          data: { stokGudang: { decrement: item.jumlah } },
-        });
-
-        await tx.stokKonsinyasi.upsert({
-          where: { apotekId_produkId: { apotekId, produkId: item.produkId } },
-          create: { apotekId, produkId: item.produkId, jumlah: item.jumlah },
-          update: { jumlah: { increment: item.jumlah } },
-        });
-      }
-
-      return logs;
+    const existingProduks = await prisma.produk.findMany({
+      where: { id: { in: produkIds } },
+      select: { id: true, nama: true, stokGudang: true },
     });
+    const produkMap = new Map(existingProduks.map((p) => [p.id, p]));
+
+    for (const item of items) {
+      const produk = produkMap.get(item.produkId);
+      if (!produk) {
+        throw new Error(`Produk ${item.produkId} tidak ditemukan`);
+      }
+      if (produk.stokGudang < item.jumlah) {
+        throw new Error(`Stok gudang ${produk.nama} tidak mencukupi (tersedia: ${produk.stokGudang}, diminta: ${item.jumlah})`);
+      }
+    }
+
+    const result = [];
+    for (const item of items) {
+      const log = await prisma.konsinyasiLog.create({
+        data: { apotekId, produkId: item.produkId, salesId, jumlah: item.jumlah, keterangan: keterangan || "", tanggal: tanggal ? new Date(tanggal) : new Date() },
+      });
+      result.push(log);
+
+      await prisma.produk.update({
+        where: { id: item.produkId },
+        data: { stokGudang: { decrement: item.jumlah } },
+      });
+
+      await prisma.stokKonsinyasi.upsert({
+        where: { apotekId_produkId: { apotekId, produkId: item.produkId } },
+        create: { apotekId, produkId: item.produkId, jumlah: item.jumlah },
+        update: { jumlah: { increment: item.jumlah } },
+      });
+    }
 
     return NextResponse.json(
       { success: true, data: result, message: `${result.length} produk berhasil dikirim` },
@@ -142,38 +138,36 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, message: "Data kirim tidak ditemukan" }, { status: 404 });
     }
 
-    await prisma.$transaction(async (tx) => {
-      await tx.produk.update({
-        where: { id: existing.produkId },
-        data: { stokGudang: { increment: existing.jumlah } },
-      });
-      await tx.stokKonsinyasi.update({
-        where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
-        data: { jumlah: { decrement: existing.jumlah } },
-      });
+    await prisma.produk.update({
+      where: { id: existing.produkId },
+      data: { stokGudang: { increment: existing.jumlah } },
+    });
+    await prisma.stokKonsinyasi.update({
+      where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
+      data: { jumlah: { decrement: existing.jumlah } },
+    });
 
-      const produk = await tx.produk.findUnique({ where: { id: existing.produkId } });
-      if (!produk || produk.stokGudang < jumlah) {
-        throw new Error(`Stok gudang tidak mencukupi (tersedia: ${produk?.stokGudang || 0}, diminta: ${jumlah})`);
-      }
+    const produk = await prisma.produk.findUnique({ where: { id: existing.produkId } });
+    if (!produk || produk.stokGudang < jumlah) {
+      throw new Error(`Stok gudang tidak mencukupi (tersedia: ${produk?.stokGudang || 0}, diminta: ${jumlah})`);
+    }
 
-      await tx.produk.update({
-        where: { id: existing.produkId },
-        data: { stokGudang: { decrement: jumlah } },
-      });
-      await tx.stokKonsinyasi.update({
-        where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
-        data: { jumlah: { increment: jumlah } },
-      });
+    await prisma.produk.update({
+      where: { id: existing.produkId },
+      data: { stokGudang: { decrement: jumlah } },
+    });
+    await prisma.stokKonsinyasi.update({
+      where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
+      data: { jumlah: { increment: jumlah } },
+    });
 
-      await tx.konsinyasiLog.update({
-        where: { id },
-        data: {
-          jumlah,
-          keterangan: keterangan || "",
-          tanggal: tanggal ? new Date(tanggal) : existing.tanggal,
-        },
-      });
+    await prisma.konsinyasiLog.update({
+      where: { id },
+      data: {
+        jumlah,
+        keterangan: keterangan || "",
+        tanggal: tanggal ? new Date(tanggal) : existing.tanggal,
+      },
     });
 
     return NextResponse.json({ success: true, message: "Data kirim berhasil diupdate" });
@@ -211,17 +205,15 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ success: false, message: "Data kirim tidak ditemukan" }, { status: 404 });
     }
 
-    await prisma.$transaction(async (tx) => {
-      await tx.produk.update({
-        where: { id: existing.produkId },
-        data: { stokGudang: { increment: existing.jumlah } },
-      });
-      await tx.stokKonsinyasi.update({
-        where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
-        data: { jumlah: { decrement: existing.jumlah } },
-      });
-      await tx.konsinyasiLog.delete({ where: { id } });
+    await prisma.produk.update({
+      where: { id: existing.produkId },
+      data: { stokGudang: { increment: existing.jumlah } },
     });
+    await prisma.stokKonsinyasi.update({
+      where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
+      data: { jumlah: { decrement: existing.jumlah } },
+    });
+    await prisma.konsinyasiLog.delete({ where: { id } });
 
     return NextResponse.json({ success: true, message: "Data kirim berhasil dihapus" });
   } catch (error) {

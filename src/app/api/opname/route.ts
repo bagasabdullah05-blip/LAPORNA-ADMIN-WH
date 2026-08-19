@@ -50,58 +50,54 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await prisma.$transaction(async (tx) => {
-      const existingProduk = await tx.produk.findUnique({ where: { id: produkId } });
-      if (!existingProduk) {
-        throw new Error("Produk tidak ditemukan");
+    const existingProduk = await prisma.produk.findUnique({ where: { id: produkId } });
+    if (!existingProduk) {
+      throw new Error("Produk tidak ditemukan");
+    }
+
+    let stokSistem: number;
+
+    if (tipe === "GUDANG") {
+      stokSistem = existingProduk.stokGudang;
+    } else if (tipe === "APOTEK") {
+      if (!apotekId) {
+        throw new Error("apotekId harus diisi untuk opname apotek");
       }
-
-      let stokSistem: number;
-
-      if (tipe === "GUDANG") {
-        stokSistem = existingProduk.stokGudang;
-      } else if (tipe === "APOTEK") {
-        if (!apotekId) {
-          throw new Error("apotekId harus diisi untuk opname apotek");
-        }
-        const stokKonsinyasi = await tx.stokKonsinyasi.findUnique({
-          where: { apotekId_produkId: { apotekId, produkId } },
-        });
-        stokSistem = stokKonsinyasi?.jumlah || 0;
-      } else {
-        throw new Error("Tipe harus GUDANG atau APOTEK");
-      }
-
-      const selisih = stokFisik - stokSistem;
-
-      const log = await tx.opnameLog.create({
-        data: {
-          userId: user.userId,
-          tipe,
-          apotekId: tipe === "APOTEK" ? apotekId : null,
-          produkId,
-          stokSistem,
-          stokFisik,
-          selisih,
-          keterangan,
-          tanggal: tanggal ? new Date(tanggal) : new Date(),
-        },
+      const stokKonsinyasi = await prisma.stokKonsinyasi.findUnique({
+        where: { apotekId_produkId: { apotekId, produkId } },
       });
+      stokSistem = stokKonsinyasi?.jumlah || 0;
+    } else {
+      throw new Error("Tipe harus GUDANG atau APOTEK");
+    }
 
-      if (tipe === "GUDANG") {
-        await tx.produk.update({
-          where: { id: produkId },
-          data: { stokGudang: stokFisik },
-        });
-      } else {
-        await tx.stokKonsinyasi.update({
-          where: { apotekId_produkId: { apotekId, produkId } },
-          data: { jumlah: stokFisik },
-        });
-      }
+    const selisih = stokFisik - stokSistem;
 
-      return log;
+    const result = await prisma.opnameLog.create({
+      data: {
+        userId: user.userId,
+        tipe,
+        apotekId: tipe === "APOTEK" ? apotekId : null,
+        produkId,
+        stokSistem,
+        stokFisik,
+        selisih,
+        keterangan,
+        tanggal: tanggal ? new Date(tanggal) : new Date(),
+      },
     });
+
+    if (tipe === "GUDANG") {
+      await prisma.produk.update({
+        where: { id: produkId },
+        data: { stokGudang: stokFisik },
+      });
+    } else {
+      await prisma.stokKonsinyasi.update({
+        where: { apotekId_produkId: { apotekId, produkId } },
+        data: { jumlah: stokFisik },
+      });
+    }
 
     return NextResponse.json({ success: true, data: result }, { status: 201 });
   } catch (error) {
@@ -138,25 +134,23 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ success: false, message: "Data opname tidak ditemukan" }, { status: 404 });
     }
 
-    await prisma.$transaction(async (tx) => {
-      if (existing.tipe === "GUDANG") {
-        await tx.produk.update({
-          where: { id: existing.produkId },
-          data: { stokGudang: existing.stokSistem },
-        });
-      } else if (existing.apotekId) {
-        const stokExists = await tx.stokKonsinyasi.findUnique({
+    if (existing.tipe === "GUDANG") {
+      await prisma.produk.update({
+        where: { id: existing.produkId },
+        data: { stokGudang: existing.stokSistem },
+      });
+    } else if (existing.apotekId) {
+      const stokExists = await prisma.stokKonsinyasi.findUnique({
+        where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
+      });
+      if (stokExists) {
+        await prisma.stokKonsinyasi.update({
           where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
+          data: { jumlah: existing.stokSistem },
         });
-        if (stokExists) {
-          await tx.stokKonsinyasi.update({
-            where: { apotekId_produkId: { apotekId: existing.apotekId, produkId: existing.produkId } },
-            data: { jumlah: existing.stokSistem },
-          });
-        }
       }
-      await tx.opnameLog.delete({ where: { id } });
-    });
+    }
+    await prisma.opnameLog.delete({ where: { id } });
 
     return NextResponse.json({ success: true, message: "Opname berhasil dihapus, stok dikembalikan ke stok sistem" });
   } catch (error) {

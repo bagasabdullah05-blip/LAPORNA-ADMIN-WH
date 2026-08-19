@@ -81,55 +81,51 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await prisma.$transaction(async (tx) => {
-      const cicilan = await tx.cicilan.create({
-        data: {
-          piutangId,
-          userId: user.userId,
-          jumlahBayar,
-          keterangan: keterangan || "",
-        },
-      });
-
-      const newSisa = existingPiutang.sisa - jumlahBayar;
-
-      await tx.piutang.update({
-        where: { id: piutangId },
-        data: {
-          sisa: newSisa,
-          status: newSisa <= 0 ? "LUNAS" : "BELUM_LUNAS",
-        },
-      });
-
-      const piutangWithPenjualan = await tx.piutang.findUnique({
-        where: { id: piutangId },
-        include: { penjualan: { select: { tipe: true, apotekId: true } } },
-      });
-
-      const tipePenjualan = piutangWithPenjualan?.penjualan?.tipe;
-      const apotekId = piutangWithPenjualan?.penjualan?.apotekId || piutangWithPenjualan?.apotekId || null;
-
-      const isKonsi = tipePenjualan === "KONSINYASI";
-      const tipeSetoran = newSisa <= 0
-        ? (isKonsi ? "KONSINYASI_LUNAS" : "PELUNASAN")
-        : (isKonsi ? "KONSINYASI_CICIL" : "CICILAN");
-
-      await tx.setoran.create({
-        data: {
-          tipe: tipeSetoran,
-          penjualanId: piutangWithPenjualan?.penjualanId || null,
-          piutangId,
-          apotekId,
-          jumlah: jumlahBayar,
-          keterangan: keterangan || `Auto: Cicilan ${newSisa <= 0 ? '(lunas)' : `(sisa Rp ${newSisa.toLocaleString('id-ID')})`}`,
-          disetujui: false,
-        },
-      });
-
-      return cicilan;
+    const cicilan = await prisma.cicilan.create({
+      data: {
+        piutangId,
+        userId: user.userId,
+        jumlahBayar,
+        keterangan: keterangan || "",
+      },
     });
 
-    return NextResponse.json({ success: true, data: result }, { status: 201 });
+    const newSisa = existingPiutang.sisa - jumlahBayar;
+
+    await prisma.piutang.update({
+      where: { id: piutangId },
+      data: {
+        sisa: newSisa,
+        status: newSisa <= 0 ? "LUNAS" : "BELUM_LUNAS",
+      },
+    });
+
+    const piutangWithPenjualan = await prisma.piutang.findUnique({
+      where: { id: piutangId },
+      include: { penjualan: { select: { tipe: true, apotekId: true } } },
+    });
+
+    const tipePenjualan = piutangWithPenjualan?.penjualan?.tipe;
+    const apotekId = piutangWithPenjualan?.penjualan?.apotekId || piutangWithPenjualan?.apotekId || null;
+
+    const isKonsi = tipePenjualan === "KONSINYASI";
+    const tipeSetoran = newSisa <= 0
+      ? (isKonsi ? "KONSINYASI_LUNAS" : "PELUNASAN")
+      : (isKonsi ? "KONSINYASI_CICIL" : "CICILAN");
+
+    await prisma.setoran.create({
+      data: {
+        tipe: tipeSetoran,
+        penjualanId: piutangWithPenjualan?.penjualanId || null,
+        piutangId,
+        apotekId,
+        jumlah: jumlahBayar,
+        keterangan: keterangan || `Auto: Cicilan ${newSisa <= 0 ? '(lunas)' : `(sisa Rp ${newSisa.toLocaleString('id-ID')})`}`,
+        disetujui: false,
+      },
+    });
+
+    return NextResponse.json({ success: true, data: cicilan }, { status: 201 });
   } catch (error) {
     console.error("Create cicilan error:", error);
     return NextResponse.json(

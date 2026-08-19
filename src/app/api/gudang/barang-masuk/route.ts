@@ -74,23 +74,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await prisma.$transaction(async (tx) => {
-      const log = await tx.barangMasukLog.create({
-        data: {
-          produkId,
-          jumlah,
-          hargaBeli,
-          keterangan: keterangan || "",
-          tanggal: tanggal ? new Date(tanggal) : new Date(),
-        },
-      });
+    const result = await prisma.barangMasukLog.create({
+      data: {
+        produkId,
+        jumlah,
+        hargaBeli,
+        keterangan: keterangan || "",
+        tanggal: tanggal ? new Date(tanggal) : new Date(),
+      },
+    });
 
-      await tx.produk.update({
-        where: { id: produkId },
-        data: { stokGudang: { increment: jumlah } },
-      });
-
-      return log;
+    await prisma.produk.update({
+      where: { id: produkId },
+      data: { stokGudang: { increment: jumlah } },
     });
 
     return NextResponse.json({ success: true, data: result }, { status: 201 });
@@ -128,27 +124,25 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, message: "Data barang masuk tidak ditemukan" }, { status: 404 });
     }
 
-    await prisma.$transaction(async (tx) => {
-      await tx.produk.update({
-        where: { id: existing.produkId },
-        data: { stokGudang: { decrement: existing.jumlah } },
-      });
+    await prisma.produk.update({
+      where: { id: existing.produkId },
+      data: { stokGudang: { decrement: existing.jumlah } },
+    });
 
-      await tx.produk.update({
-        where: { id: produkId },
-        data: { stokGudang: { increment: jumlah } },
-      });
+    await prisma.produk.update({
+      where: { id: produkId },
+      data: { stokGudang: { increment: jumlah } },
+    });
 
-      await tx.barangMasukLog.update({
-        where: { id },
-        data: {
-          produkId,
-          jumlah,
-          hargaBeli,
-          keterangan: keterangan || "",
-          tanggal: tanggal ? new Date(tanggal) : existing.tanggal,
-        },
-      });
+    await prisma.barangMasukLog.update({
+      where: { id },
+      data: {
+        produkId,
+        jumlah,
+        hargaBeli,
+        keterangan: keterangan || "",
+        tanggal: tanggal ? new Date(tanggal) : existing.tanggal,
+      },
     });
 
     return NextResponse.json({ success: true, message: "Barang masuk berhasil diupdate" });
@@ -186,13 +180,11 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ success: false, message: "Data barang masuk tidak ditemukan" }, { status: 404 });
     }
 
-    await prisma.$transaction(async (tx) => {
-      await tx.produk.update({
-        where: { id: existing.produkId },
-        data: { stokGudang: { decrement: existing.jumlah } },
-      });
-      await tx.barangMasukLog.delete({ where: { id } });
+    await prisma.produk.update({
+      where: { id: existing.produkId },
+      data: { stokGudang: { decrement: existing.jumlah } },
     });
+    await prisma.barangMasukLog.delete({ where: { id } });
 
     return NextResponse.json({ success: true, message: "Barang masuk berhasil dihapus" });
   } catch (error) {
