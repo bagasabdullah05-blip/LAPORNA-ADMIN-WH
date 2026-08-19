@@ -30,3 +30,6 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+test.ps1
+test2.ps1
+test3.ps1
