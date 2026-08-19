@@ -58,6 +58,7 @@ Prisma creates PascalCase tables (`"Produk"`, `"Penjualan"`, etc.) and camelCase
 4. **Invalid Date fix**: `tanggal::date` PostgreSQL converted via `toISOString().split('T')[0]`
 5. **Dashboard API**: Quoted table name `"Produk"` in raw SQL
 6. **Piutang API**: `GET /api/piutang` must include `cicilan: true` in include clause; page null-safety for `selectedPiutang.cicilan.length`
+7. **NEON/NEXTJS NO TRANSACTION**: `prisma.$transaction(async (tx) => {...})` DOES NOT WORK on Neon serverless (Netlify). Interactive transactions cause "Transaction not found" errors. All database operations MUST use sequential `prisma.*` calls directly — NEVER wrap in `$transaction`.
 
 ## Color Theme
 Primary colors defined in `globals.css` `@theme` block:
